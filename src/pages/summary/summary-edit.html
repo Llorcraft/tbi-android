@@ -1,0 +1,23 @@
+<ion-list radio-group [(ngModel)]="report_selected">
+  <ion-list-header>
+    Reports
+  </ion-list-header>
+
+  <ion-item *ngFor="let r of reports; let i=index" [attr.title]="r.summary_id">
+    <ion-label>{{friendly_path(r)}}</ion-label>
+    <ion-radio checked="true" value="{{r.id}}"></ion-radio>
+  </ion-item>
+
+</ion-list>
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding>
+      <ion-col col-5 no-padding>
+        <button (click)="close()" ion-button small block color="light">Cancel</button>
+      </ion-col>
+      <ion-col offset-2 col-5 no-padding text-right>
+        <button (click)="edit()" [disabled]="!this.report_selected" block ion-button small>Edit</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,3 @@
+en el summary poner /m2 cdo is unknown
+en el summary si es surface mostrar el area en dimension
+en flange revisar el tabindex y el free input

@@ -1,0 +1,29 @@
+edit-picture {
+  svg {
+    width: 64px;
+    height: auto;
+    position: absolute;
+    z-index: 100;
+    g {
+        &.warm {
+            path {fill: red;}
+        }
+        &.cold {
+            path {fill: yellow;}
+        }
+        &.templade {
+            path {fill: cyan;}
+        }
+      text {
+        font-family: Verdana, Tahoma;
+        font-size: 110px !important;
+        letter-spacing: -15px;
+        color: #000
+      }
+      circle {
+        fill: #fff;
+        opacity: .6;
+      }
+    }
+  }
+}

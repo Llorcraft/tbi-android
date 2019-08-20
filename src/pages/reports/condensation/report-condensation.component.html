@@ -1,0 +1,88 @@
+<report-header [parent]="this"></report-header>
+
+<ion-content #content [ngClass]="{'scrollable-content': !report.result}">
+  <ion-grid [hidden]="view=='edit_picture'">
+    <ion-row>
+      <ion-col col-12 col-md-8 no-padding>
+        <form novalidate #form="ngForm" [hidden]="segment!='input'" (submit)="calculate()">
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked>Component/Location</ion-label>
+                <ion-input tabindex="1" (ionFocus)="on_focus($event)" name="location" required data-val-required="Please input Component/Location"
+                  [(ngModel)]="report.component.fields.location" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row [hidden]="true">
+            <ion-col>
+              <ion-item>
+                <ion-input type="hidden" name="pictures" required data-val-required="Please take a picture" [(ngModel)]="picture_qty"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked>Summary Id</ion-label>
+                <ion-input tabindex="2" (ionFocus)="on_focus($event)" name="summary_id" [(ngModel)]="report.summary_id"
+                  required data-val-required="Please input summary id" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked style="margin-top: 1.4rem;color: #999;">Ice block</ion-label>
+                <ion-toggle tabindex="7" (ionChange)="setCondensation($event, 0)" [checked]="report.component.fields.condensation[0]"  name="ice_block"></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked style="margin-top: 1.4rem;color: #999;">Wet surface</ion-label>
+                <ion-toggle tabindex="8" (ionChange)="setCondensation($event, 1)" [checked]="report.component.fields.condensation[1]" name="wet_surface"></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col col-6>
+              <ion-item>
+                <ion-label stacked style="margin-top: 1.4rem;color: #999;">Others</ion-label>
+                <ion-toggle tabindex="9" [(ngModel)]="report.component.fields.condensation_other" name="other"></ion-toggle>
+              </ion-item>
+            </ion-col> -->
+          </ion-row>
+          <ion-row>
+              <ion-col col-11 col-md-10>
+                <ion-item>
+                  <ion-label stacked>Comments</ion-label>
+                  <ion-input type="text" tabindex="8" (ionFocus)="on_focus($event)" (keyup.enter)="on_keypress($event)"
+                    name="Comments" [(ngModel)]="report.component.fields.condensation_comment"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+  
+        </form>
+      </ion-col>
+      <ion-col col-12 col-md-4 no-padding>
+        <ion-row>
+            <ion-col col-12 picture-slide [parent]="this" [report]="report" [editable]="false"  (onStartEdit)="on_picture_start_edit($event)"></ion-col>
+        </ion-row>
+        <!-- <ion-row col-12 p-4 *ngIf="view=='result' && (!!form && !form.invalid)">
+          <ion-col col-4 img-container [style.backgroundImage]="'url('+ first_picture +')'"></ion-col>
+          <ion-col col-8 class="damaged-result">Insulation in cold systems is critical not only for energy efficiency but for safety and process requirements.</ion-col>
+          <ion-col col-8 class="damaged-result" *ngIf="report.component.fields.condensation_ice_block">Ice block indicates the failure of the insulation system (or the lack of it). A part from the potential energy savings, its weight represents a risk for the installation break down.</ion-col>
+          <ion-col col-8 class="damaged-result" *ngIf="report.component.fields.condensation_wet_surface">Condensations indicates the need of a better insulation solution to bring the surface temperature above the dew point.</ion-col>
+        </ion-row> -->
+      </ion-col>
+      <ion-col col-12 padding [hidden]="!(view=='form' && !!errors.errors.length)">
+        <report-errors padding #errors col-12 ></report-errors>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+
+  <edit-picture *ngIf="view=='edit_picture'" [report]="report" [picture]="editing_picture"></edit-picture>
+
+</ion-content>
+
+<report-footer [parent]="this" [calculate_text]="'Validate'"></report-footer>

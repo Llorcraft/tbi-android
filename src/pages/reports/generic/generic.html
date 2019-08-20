@@ -1,0 +1,71 @@
+<report-header [parent]="this"></report-header>
+
+<ion-content #content [ngClass]="{'scrollable-content': !report.result}">
+  <ion-grid [hidden]="view=='edit_picture'" class="fixed-col">
+    <ion-row>
+      <ion-col col-12 col-md-8 no-padding>
+
+        <form novalidate #form="ngForm" [hidden]="segment!='input'" (submit)="calculate()">
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked>Component/Location</ion-label>
+                <ion-input [disabled]="!editable" tabindex="1" (ionFocus)="on_focus($event)" name="location" required
+                  data-val-required="Please input Component/Location" [(ngModel)]="report.component.fields.location"
+                  type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked>Summary Id</ion-label>
+                <ion-input tabindex="2" maxlength="12" (ionFocus)="on_focus($event)" name="summary_id"
+                  [(ngModel)]="report.summary_id" required data-val-required="Please input summary id" type="text">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row [hidden]="true">
+            <ion-col>
+              <ion-item>
+                <ion-input type="hidden" name="pictures" required data-val-required="Please take a picture"
+                  [(ngModel)]="picture_qty"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-11 col-md-10>
+              <ion-item>
+                <ion-label stacked>Comments</ion-label>
+                <ion-textarea rows="6" tabindex="3" (ionFocus)="on_focus($event)" [(ngModel)]="report.comment"
+                  name="comment"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </form>
+      </ion-col>
+
+      <ion-col col-12 col-md-4 no-padding>
+        <ion-row>
+          <ion-col col-12 picture-slide [parent]="this" [report]="report" [editable]="editable"
+            (onStartEdit)="on_picture_start_edit($event)"></ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12 no-padding *ngIf="view=='result' && (!!form && !form.invalid)">
+        <div report-result col-12 [parent]="this"></div>
+      </ion-col>
+      <ion-col col-12 padding [hidden]="!(view=='form' && !!errors.errors.length)">
+        <report-errors padding #errors col-12></report-errors>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <edit-picture *ngIf="view=='edit_picture'" [report]="report" [picture]="editing_picture"></edit-picture>
+
+</ion-content>
+
+<report-footer [parent]="this" [calculate_text]="'Report'"></report-footer>

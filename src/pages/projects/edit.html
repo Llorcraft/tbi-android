@@ -1,0 +1,226 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title>
+      {{ !project.id ? 'New project' : 'Edit project' }}
+    </ion-title>
+    <ion-buttons end>
+      <!-- <button ion-button color="light" (click)="open_camera(project)">
+        <ion-icon name="md-camera"></ion-icon><span hidden-xs>&nbsp;Take a picture</span>
+      </button> -->
+      <button *ngIf="segment=='files'" tabindex="18" ion-button small color="light" (tap)="choose_file()">
+          <ion-icon name="document"></ion-icon>
+          <span hidden-xs>Choose file</span>
+        </button>
+
+    </ion-buttons>
+  </ion-navbar>
+  <ion-segment [(ngModel)]="segment" *ngIf="show_segment">
+    <ion-segment-button value="properties">
+      Properties
+    </ion-segment-button>
+    <ion-segment-button value="files">
+      Files
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="segment=='properties'">
+      <ion-col col-12>
+        <form novalidate id="ngForm" #form="ngForm" (ngSubmit)="save()">
+          <ion-row>
+            <ion-col col-md-8 col-12>
+              <ion-row>
+                <ion-item col-10>
+                  <ion-label stacked>Name</ion-label>
+                  <ion-input tabindex="1" (ionFocus)="on_focus($event)" type="text" [(ngModel)]="project.name"
+                    name="name" required></ion-input>
+                </ion-item>
+                <ion-item no-lines class="error" *ngIf="showError.required_name">Please input project name</ion-item>
+                <ion-item col-10 [hidden]="!!free_currency">
+                  <ion-label stacked>Currency</ion-label>
+                  <ion-input tabindex="1" (ionFocus)="on_focus($event)" readonly
+                    [value]="friendy_more('CURRENCIES', project.currency_index)"></ion-input>
+                </ion-item>
+                <ion-item col-10 [hidden]="!free_currency">
+                  <ion-label stacked>Currency</ion-label>
+                  <ion-input required #currency_free (ionFocus)="on_focus($event)" maxlength="3" tabindex="1"
+                    type="text" (keyup)="change_measures_more($event)" [(ngModel)]="project.currency" name="currency">
+                  </ion-input>
+                </ion-item>
+                <ion-col col-2>
+                  <more pull-left #currency
+                    (change)="set_currency(currency, currency_free);change_measures_more($event)" [type]="'currencies'"
+                    modal-button></more>
+                </ion-col>
+                <input type="hidden" [(ngModel)]="currency_validation" name="currency_validation" required>
+                <ion-item no-lines class="error" *ngIf="showError.required_currency">Please input currency</ion-item>
+                <ion-item col-6>
+                  <ion-label stacked>Energy price</ion-label>
+                  <ion-input tabindex="2" type="tel" inputmode="numeric" [(ngModel)]="project.price" name="price"
+                    (ionFocus)="on_focus($event)" scroll="40"></ion-input>
+                  <input type="hidden" [(ngModel)]="energy_validation" name="energy_validation" required>
+                </ion-item>
+                <ion-item col-4>
+                  <ion-label stacked>Units</ion-label>
+                  <ion-input (ionFocus)="on_focus($event)" readonly value={{project.price_measure}}></ion-input>
+                </ion-item>
+                <ion-col col-2>
+                  <more pull-left #measure [type]="'measures'" (change)="set_measure($event)" modal-button></more>
+                </ion-col>
+                <ion-item col-12 no-lines class="error" *ngIf="showError.energy_validation">Energy price must be > 0
+                </ion-item>
+                <ion-col col-10 no-padding>
+                  <ion-item [hidden]="!project.co2_index">
+                    <ion-label stacked>CO<sub>2</sub> emissions [grCO<sub>2</sub>/kWh]</ion-label>
+                    <ion-input tabindex="3" (ionFocus)="on_focus($event)" readonly="readonly"
+                      [value]="friendy_more('CO2', project.co2_index)"></ion-input>
+                  </ion-item>
+                  <ion-item [hidden]="!!project.co2_index">
+                    <ion-label stacked>CO<sub>2</sub> emissions [grCO<sub>2</sub>/kWh]</ion-label>
+                    <ion-input tabindex="3" required (ionFocus)="on_focus($event)" #co2_free type="tel"
+                      inputmode="numeric" [(ngModel)]="project.co2" name="co2"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-2>
+                  <more pull-left #emissitivity (change)="set_co2($event, co2_free)" [type]="'co2'" modal-button></more>
+                </ion-col>
+                <input type="hidden" [(ngModel)]="co2_validation" name="co2_validation" required>
+                <ion-item col-12 no-lines class="error" *ngIf="showError.co2_validation">CO<sub>2</sub> emmision must be
+                  > 0</ion-item>
+              </ion-row>
+            </ion-col>
+            <ion-col col-md-4 col-12>
+              <ion-item text-center border-none no-padding>
+                <img [src]="project.picture || pictures.NON_PICTURE" (click)="ask_for_change_picture(project)">
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row small-title>
+            <ion-col col-12>
+              <ion-row mb-3>
+                <ion-title class="label" col-12 text-left>Project Leader</ion-title>
+                <ion-item col-md-5 col-12>
+                  <ion-input tabindex="5" (ionFocus)="on_focus($event)" [(ngModel)]="project.people.leader.name"
+                    placeholder="Name" name="leader-name" scroll="60"></ion-input>
+                </ion-item>
+                <ion-item col-md-4 col-12>
+                  <ion-input tabindex="6" (ionFocus)="on_focus($event)" type="email"
+                    [(ngModel)]="project.people.leader.email" placeholder="Email" name="leader-email" scroll="60">
+                  </ion-input>
+                </ion-item>
+                <ion-item col-md-3 col-12>
+                  <ion-input tabindex="7" (ionFocus)="on_focus($event)" type="phone"
+                    [(ngModel)]="project.people.leader.phone" placeholder="Phone" name="leader-phone" scroll="60">
+                  </ion-input>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+            <ion-col col-12>
+              <ion-row mb-3>
+                <ion-title class="label" col-12 text-left>Energy Manager</ion-title>
+                <ion-item col-md-5 col-12>
+                  <ion-input tabindex="8" (ionFocus)="on_focus($event)" [(ngModel)]="project.people.energy_manager.name"
+                    placeholder="Name" name="energy-name" scroll="20"></ion-input>
+                </ion-item>
+                <ion-item col-md-4 col-12>
+                  <ion-input tabindex="9" (ionFocus)="on_focus($event)" type="email"
+                    [(ngModel)]="project.people.energy_manager.email" placeholder="Email" name="energy-email"
+                    scroll="20"></ion-input>
+                </ion-item>
+                <ion-item col-md-3 col-12>
+                  <ion-input tabindex="10" (ionFocus)="on_focus($event)" type="phone"
+                    [(ngModel)]="project.people.energy_manager.phone" placeholder="Phone" name="energy-phone"
+                    scroll="20"></ion-input>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+            <ion-col col-12>
+              <ion-row mb-3>
+                <ion-title class="label" col-12 text-left>Maintenance Manager</ion-title>
+                <ion-item col-md-5 col-12>
+                  <ion-input tabindex="11" (ionFocus)="on_focus($event)"
+                    [(ngModel)]="project.people.maintenance_manager.name" placeholder="Name" name="maintenance-name"
+                    scroll="-20"></ion-input>
+                </ion-item>
+                <ion-item col-md-4 col-12>
+                  <ion-input tabindex="12" (ionFocus)="on_focus($event)" type="email"
+                    [(ngModel)]="project.people.maintenance_manager.email" placeholder="Email" name="maintenance-email"
+                    scroll="-20"></ion-input>
+                </ion-item>
+                <ion-item col-md-3 col-12>
+                  <ion-input tabindex="13" (ionFocus)="on_focus($event)" type="phone"
+                    [(ngModel)]="project.people.maintenance_manager.phone" placeholder="Phone" name="maintenance-phone"
+                    scroll="-20"></ion-input>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+            <ion-col col-12>
+              <ion-row>
+                <ion-title class="label" col-12 text-left>HSE Manager</ion-title>
+                <ion-item col-md-5 col-12>
+                  <ion-input tabindex="14" (ionFocus)="on_focus($event)" [(ngModel)]="project.people.hse_manager.name"
+                    placeholder="Name" name="hse-name" scroll="-60"></ion-input>
+                </ion-item>
+                <ion-item col-md-4 col-12>
+                  <ion-input tabindex="15" (ionFocus)="on_focus($event)" type="email"
+                    [(ngModel)]="project.people.hse_manager.email" placeholder="Email" name="hse-email" scroll="-60">
+                  </ion-input>
+                </ion-item>
+                <ion-item col-md-3 col-12>
+                  <ion-input tabindex="16" (ionFocus)="on_focus($event)" (keyup.enter)="on_keypress($event)"
+                    type="phone" [(ngModel)]="project.people.hse_manager.phone" placeholder="Phone" name="hse-phone"
+                    scroll="-60"></ion-input>
+                </ion-item>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="segment=='files'">
+      <ion-col col-12>
+        <ion-list id="document-list" [class.editable]="edit_mode">
+          <ion-item *ngFor="let f of project.documents">
+            <ion-icon name="document-{{f.extension}}" color="gray" item-start></ion-icon>
+            <span (click)="open_file(f)">{{f.file}}</span>
+            <ion-icon (click)="ask_for_delete(f)" name="md-trash" color="red" item-end></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding>
+      <ion-col col-3 no-padding>
+        <button *ngIf="!navParams.get('force')" tabindex="17" ion-button small color="light" (click)="onBackClick()">
+          <ion-icon name="arrow-back"></ion-icon>
+          <span hidden-xs>&nbsp;Back</span>
+        </button>
+      </ion-col>
+      <ion-col col-6 text-center>
+        <tools>
+          <button ion-button icon-only small color="light" on-tap="open_camera(project)">
+            <ion-icon name="md-camera"></ion-icon>
+          </button>
+        </tools>
+      </ion-col>
+      <ion-col col-3 text-right no-padding>
+          <button tabindex="19" *ngIf="segment!='properties'" 
+          ion-button small color="primary" on-tap="segment='properties'">
+          <ion-icon visible-xs name="arrow-forward">
+          </ion-icon><span hidden-xs>Next</span>
+        </button>
+        <button form="ngForm" id="submit-button" id="submit-button" tabindex="19" *ngIf="segment=='properties'"
+          ion-button small color="primary">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <span hidden-xs>Save</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

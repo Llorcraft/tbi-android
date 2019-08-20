@@ -1,0 +1,437 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Summary</ion-title>
+    <ion-buttons end>
+      <button [disabled]="!canPdf" ion-button on-tap="export_new_pdf(true)" style="width: 53px">
+        <ion-icon name="document-pdf"></ion-icon>
+      </button>
+      <button [disabled]="!canPdfEnergy" ion-button (click)="export_new_pdf(false)"style="width: 53px">
+        <ion-icon name="stats"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngClass]="{'creating-pdf': creating_pdf}">
+  <div class="hide-pdf">
+    <div>
+      <ion-icon color="royal" name="refresh"></ion-icon>
+    </div>
+  </div>
+  <kendo-pdf-export #pdf paperSize="A4" margin="0 5cm" [scale]="0.5" landscape="true" forcePageBreak=".page-break">
+    <div class="table-container">
+      <table class="data" border="0">
+        <colgroup>
+          <col style="width: 50px">
+          <col style="width: 100px">
+          <col style="width: 70px">
+          <col style="width: 70px">
+          <col style="width: 70px">
+          <col style="width: 10px">
+          <col style="width: 70px">
+          <col style="width: 10px">
+          <col style="width: 100px">
+          <col style="width: 100px">
+          <col style="width: 100px">
+          <col style="width: 80px">
+          <col style="width: 50px">
+          <col style="width: 50px">
+          <col style="width: 10px">
+          <col style="width: 30px">
+          <col style="width: 30px">
+          <col style="width: 30px">
+          <col style="width: 30px">
+          <col style="width: 30px">
+        </colgroup>
+        <ng-container *ngFor="let c of components; let i=index">
+          <thead [class.page-break]="(i+1)%8==0" *ngIf="i==0 || (i+1)%8==0">
+            <tr>
+              <th colspan="2"></th>
+              <th colspan="5"
+                style="border: 2px solid #fff; color:#fff; border-width: 0 0 4px 0; background-color: rgb(112,173,71)">
+                Energy
+                & CO2 analysis per year</th>
+              <th rowspan="2"></th>
+              <th rowspan="2"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 2px 4px 0">
+                <!-- <span svg="safety"></span> -->
+                <img width="100px" height="1px" style="display: block"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNzE4MDI5NDU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNzE4MDI5NTU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA3MTgwMjkyNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA3MTgwMjkzNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hHvOAQAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=">
+                Safety
+              </th>
+              <th rowspan="2"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 2px 4px 2px">
+                <!-- <span svg="maintenance"></span> -->
+                <img width="100px" height="1px" style="display: block"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNzE4MDI5NDU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNzE4MDI5NTU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA3MTgwMjkyNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA3MTgwMjkzNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hHvOAQAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=">
+                Maintenance</th>
+              <th rowspan="2"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 2px 4px 2px">
+                <!-- <span svg="custom"></span> -->
+                <img width="100px" height="1px" style="display: block"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNzE4MDI5NDU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNzE4MDI5NTU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA3MTgwMjkyNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA3MTgwMjkzNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hHvOAQAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=">
+                Other</th>
+              <th rowspan="2"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 2px 4px 2px">
+                <img width="100px" height="1px" style="display: block"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNzE4MDI5NDU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNzE4MDI5NTU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA3MTgwMjkyNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA3MTgwMjkzNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hHvOAQAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=">
+                TBI Advice</th>
+              <th rowspan="2" colspan="2" *ngIf="REPORT.VALIDATION"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 2px 4px 2px">
+                <img width="100px" height="1px" style="display: block"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNzE4MDI5NDU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNzE4MDI5NTU5NTMxMUU5QkI4MkZBN0U1NjUxQjNCNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA3MTgwMjkyNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA3MTgwMjkzNTk1MzExRTlCQjgyRkE3RTU2NTFCM0I3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hHvOAQAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=">
+                Validation</th>
+              <th rowspan="2" *ngIf="REPORT.VALIDATION"></th>
+              <th colspan="5"
+                style="background-color: rgb(48,84,150); border: 2px solid #fff; color:#fff; border-width: 0 0 4px 2px">
+                Input</th>
+            </tr>
+            <tr>
+              <th colspan="2">Component<br/>Location</th>
+              <th colspan="1"
+                style="background-color:rgb(217,217,217); border: 2px solid #fff; border-width: 0 0 4px 0">Units</th>
+              <th colspan="1"
+                style="white-space: normal; background-color:rgb(217,217,217); border: 2px solid #fff; border-width: 0 4px 4px 4px">
+                Current
+                Losses & Emissions</th>
+              <th colspan="3"
+                style="white-space: normal; background-color:rgb(217,217,217); border: 2px solid #fff; border-width: 0 0 4px 0">
+                Potential<br>savings</th>
+              <th class="vertical">
+                <div><span one-line>Insulated</span></div>
+              </th>
+              <th class="vertical">
+                <div><span one-line>Surface (m<sup>2</sup>)</span></div>
+              </th>
+              <th class="vertical">
+                <div><span one-line>Diameter</span></div>
+              </th>
+              <th class="vertical">
+                <div><span one-line>Length</span></div>
+              </th>
+              <th class="vertical">
+                <div><span one-line>Items number</span></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr [class.disabled]="c.fields.unknow_surface">
+              <td rowspan="3" (click)="actions(c, $event)" double-border text-center
+                style="white-space: nowrap; padding-right: 1rem">
+                <ion-icon slot="icon-only" name="md-more" style="margin: 0 .5rem 0; float: left"></ion-icon>&nbsp;&nbsp;{{i+1}}
+              </td>
+              <td rowspan="3" on-tap="edit(c)" double-border>{{ellipsis(c.fields.location)}}</td>
+              <td text-center nowrap [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy">
+                {{project.s_measure}}<span *ngIf="c.fields.unknow_surface">/m<sup>2</sup></span></td>
+              <td style="border-left: 4px solid #fff; border-right: 4px solid #fff" nowrap
+                [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy" text-center>{{c.result.headLost.power
+              / 1000 | number: '1.2-2'}}</td>
+              <td nowrap [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy" text-right>{{c.result.savingPotentialMin?.power
+              / 1000 | number: '1.2-2'}}</td>
+              <td nowrap [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy" text-center
+                class="p-0" style="padding: 0; white-space: nowrap">
+                <!-- <ion-icon name="md-arrow-forward"></ion-icon> -->
+                -
+              </td>
+              <td nowrap [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy" text-left>{{c.result.savingPotentialMax?.power
+              / 1000 | number: '1.2-2'}}</td>
+              <td nowrap *ngIf="!c.is_energy" colspan="5" text-center double-border rowspan="3">Not considered ></td>
+              <td nowrap rowspan="3"></td>
+              <td nowrap rowspan="3" style="background: rgb(180,198,231)" double-border text-center>
+                <ng-container *ngFor="let r of c.reports_by_type('safety|hot')">
+                  <a href="#" (click)="open(r, $event)" *ngIf="!r.component.is_hot || !r.energy">{{r.summary_id}}</a>
+                  <a href="#" (click)="open(r, $event)" *ngIf="!!r.component.is_hot && !!r.energy">Hot surface</a>
+                </ng-container>
+                <ion-icon name="md-add-circle" (click)="add_report('safety', c, $event)"></ion-icon>
+              </td>
+              <td *ngIf="c.is_energy" rowspan="3" style="background: rgb(217,225,242)" double-border text-center>
+                <a href="#" (click)="open(r, $event)"
+                  *ngFor="let r of c.reports_by_type('maintenance|condensation|damaged')">{{r.summary_id}}</a>
+                <ion-icon name="md-add-circle" (click)="add_report('maintenance',c , $event)"></ion-icon>
+              </td>
+              <td *ngIf="!c.is_energy" rowspan="3" style="background: rgb(217,225,242)" double-border text-center>
+                <a href="#" (click)="open(r, $event)"
+                  *ngFor="let r of c.reports_by_type('maintenance|condensation|damaged')">{{r.summary_id}}</a>
+                <ion-icon name="md-add-circle" (click)="add_report('maintenance',c , $event)"></ion-icon>
+              </td>
+              <td rowspan="3" style="background: rgb(231,235,247)" double-border text-center>
+                <a href="#" (click)="open(r, $event)"
+                  *ngFor="let r of c.reports_by_type('generic|custom')">{{r.summary_id}}</a>
+                <a href="#" (click)="open(r, $event)" *ngFor="let r of c.reports_by_type('cold')">Cold surface</a>
+                <a href="#" (click)="edit(c, $event)" *ngIf="!!c.fields.space_warning"><strong
+                    style="white-space: nowrap">No Space</strong></a>
+                <ion-icon name="md-add-circle" (click)="add_custom_report(c, $event)"></ion-icon>
+              </td>
+              <td rowspan="3" double-border text-center>
+                <ng-container [ngSwitch]="advises.get(c.result.advise)">
+                  <span advise-picture *ngSwitchCase="'Recommended'"><img src="{{images.INSULATION}}"></span>
+                  <span advise-picture *ngSwitchCase="'Maintenance'"><img src="{{images.MECHANICAL}}"></span>
+                  <span advise-picture *ngSwitchCase="'Unknow surface'"><img src="{{images.SURFACE}}"></span>
+                  <!-- <span advise-picture *ngSwitchCase="'OK'"><img src="{{images.LIKE}}"></span> -->
+                  <span advise-picture *ngSwitchCase="'SAVINGS-achieved'"><img src="{{images.INCREASE}}"></span>
+                </ng-container>
+              </td>
+              <td nowrap double-border rowspan="3" *ngIf="!!REPORT.VALIDATION && !c.validationReport"
+                style="background: #fff"></td>
+              <td nowrap double-border rowspan="3" *ngIf="!!REPORT.VALIDATION && !c.validationReport"
+                style="background: #fff"></td>
+              <td nowrap *ngIf="!!REPORT.VALIDATION && !!c.validationReport" on-tap="edit_validation(c)" text-right>{{c.validationReport.reports[0].result.headLost.power
+              / 1000 | number: '1.2-2'}}</td>
+              <td nowrap *ngIf="!!REPORT.VALIDATION && !!c.validationReport" on-tap="edit_validation(c)"
+                class="measure">{{project.s_measure}}
+              </td>
+              <td nowrap double-border rowspan="3" *ngIf="REPORT.VALIDATION"></td>
+              <td nowrap rowspan="3" *ngIf="!c.result" double-border text-center>                                
+              </td>
+              <td nowrap rowspan="3" double-border text-center>{{!!c.insulated ? 'Y' : !!c.energy ? 'N': ''}}</td>
+              <td nowrap *ngIf="null!=c.fields.surface_temp" rowspan="3" double-border text-center>{{c.fields.surface}}
+              </td>
+              <td nowrap *ngIf="null==c.fields.surface_temp" rowspan="3" double-border text-center>&nbsp;</td>
+              <td nowrap rowspan="3" double-border text-center>
+                <!-- <span *ngIf="!!c.surface">{{c.fields.surface}} m<sup>2</sup></span> -->
+                <span>{{c.fields.main_dimension || c.fields.nominal_diameter}}</span>
+              </td>
+              <td rowspan="3" double-border text-center>{{c.fields.length}}</td>
+              <td rowspan="3" double-border text-center>{{c.fields.number}}</td>
+            </tr>
+
+            <tr [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy"
+              [class.disabled]="c.fields.unknow_surface">
+              <td text-center nowrap text-center class="mesure">{{project.currency}}<span
+                  *ngIf="c.fields.unknow_surface">/m<sup>2</sup></span>
+              </td>
+              <td nowrap text-center>{{c.result.headLost?.money | number: '1.0-0'}}</td>
+              <td nowrap text-right>{{c.result.savingPotentialMin?.money | number: '1.0-0'}}</td>
+              <td nowrap text-center class="p-0" style="padding: 0; white-space: nowrap;">-</td>
+              <td nowrap text-left>{{c.result.savingPotentialMax?.money | number: '1.0-0'}}</td>
+              <td nowrap *ngIf="!!c.validationReport" on-tap="edit_validation(c)" text-right>{{c.validationReport.reports[0].result.headLost?.money
+              | number: '1.0-0'}}</td>
+            </tr>
+
+            <tr [class.gray-text]="!!c.is_energy && c.fields.unknow_surface" *ngIf="!!c.is_energy"
+              [class.disabled]="c.fields.unknow_surface">
+              <td text-center nowrap double-border class="mesure">tn CO<sub>2</sub><span
+                  *ngIf="c.fields.unknow_surface">/m<sup>2</sup></span></td>
+              <td nowrap style="border-left: 4px solid #fff; border-right: 4px solid #fff" double-border text-center>
+                {{c.result.co2[0] | number: '1.2-2'}}</td>
+              <td nowrap double-border text-right>{{c.result.co2[0] - c.result.co2[1] | number: '1.2-2'}}</td>
+              <td nowrap double-border text-center class="p-0" style="padding: 0; white-space: nowrap;">-</td>
+              <td nowrap double-border text-left>{{c.result.co2[0] - c.result.co2[2] | number: '1.2-2'}}</td>
+              <td nowrap *ngIf="!!c.validationReport" on-tap="edit_validation(c)" double-border text-right>{{c.validationReport.reports[0].result.co2[0]
+              | number: '1.2-2'}}</td>
+            </tr>
+          </tbody>
+        </ng-container>
+        <tfoot *ngIf="!!components.length">
+          <tr>
+            <td rowspan="3" colspan="2" double-border text-right>
+              ESTIMATION TOTAL PROJECT
+            </td>
+            <td text-center>{{project.s_measure}}</td>
+            <td text-center>{{(totals.headLost.power / 1000) | number: '1.2-2'}}</td>
+            <td text-right>{{totals.savingPotentialMin?.power / 1000 | number: '1.2-2'}}</td>
+            <td text-center class="p-0" style="padding: 0; white-space: nowrap">-</td>
+            <td text-left>{{totals.savingPotentialMax?.power / 1000 | number: '1.2-2'}}</td>
+            <td colspan="2" double-border rowspan="3"></td>
+            <td double-border [attr.colspan]="!!REPORT.VALIDATION ? 11 : 8" rowspan="3">
+              <ion-grid>
+                <ion-row class="legend">
+                  <ion-col no-padding col-4><span advise-picture><img src="{{images.MECHANICAL}}"></span>Maintenance
+                  </ion-col>
+                  <ion-col no-padding col-6><span advise-picture><img src="{{images.INSULATION}}"></span>Insulation
+                    recommended</ion-col>
+                  <ion-col no-padding col-4><span advise-picture><img style="margin-top: 3px"
+                        src="{{images.SURFACE}}"></span>Surface unknown
+                  </ion-col>
+                  <!-- <ion-col no-padding col-6><span advise-picture><img src="{{images.LIKE}}"></span>System OK</ion-col> -->
+                  <ion-col no-padding col-6><span advise-picture><img src="{{images.INCREASE}}"></span>Increase
+                    performance or thickness</ion-col>
+                </ion-row>
+              </ion-grid>
+            </td>
+          </tr>
+
+          <tr>
+            <td text-center text-center class="mesure">{{project.currency}}</td>
+            <td text-center>{{!report_result ? 0 : report_result.bars.current.losses[1] | number: '1.0-0'}}</td>
+            <td text-right>{{!report_result ? 0 : report_result.bars.basic.savings[1] | number: '1.0-0'}}</td>
+            <td text-center class="p-0" style="padding: 0; white-space: nowrap;">-</td>
+            <td text-left>{{!report_result ? 0 : report_result.bars.economical.savings[1] | number: '1.0-0'}}</td>
+          </tr>
+
+          <tr>
+            <td text-center double-border class="mesure">tn CO<sub>2</sub></td>
+            <td double-border text-center>{{totals.co2[0] | number: '1.2-2'}}</td>
+            <td double-border text-right>{{totals.co2[0] - totals.co2[1] | number: '1.2-2'}}</td>
+            <td double-border text-center class="p-0" style="padding: 0; white-space: nowrap;">-</td>
+            <td double-border text-left>{{totals.co2[0] - totals.co2[2] | number: '1.2-2'}}</td>
+          </tr>
+
+        </tfoot>
+      </table>
+    </div>
+
+    <div no-padding class="chart text-center" style="padding: 1rem 0" [ngClass]="{'page-break': 1 == 1}">
+      <div report-result #report_result *ngIf="!!report && !!totals.headLost.power" [parent]="this"
+        [currency]="project.currency" [show_advise]="false"></div>
+    </div>
+
+    <ion-grid pdf class="report-grid-pdf page-break" style="margin-top: 8rem">
+        <ion-row>
+          <ion-col col-7>
+            <h4 style="margin: 1rem 0"><strong>Contacts</strong></h4>
+            <ion-row>
+              <ion-item col-5 *ngIf="!!has_people && !!project.people.leader.name">
+                <label>Project Leader</label>
+                <h4>
+                  <a href="mailto:{{project.people.leader.email}}">{{project.people.leader.name}}</a>
+                  <a *ngIf="!!project.people.leader.phone" style="float:right"
+                    href="tel:{{project.people.leader.phone}}">{{project.people.leader.phone}}</a>
+                </h4>
+              </ion-item>
+              <ion-item col-5 *ngIf="!!has_people && !!project.people.energy_manager.name">
+                <label>Energy manager</label>
+                <h4>
+                  <a href="mailto:{{project.people.energy_manager.email}}">{{project.people.energy_manager.name}}</a>
+                  <a *ngIf="!!project.people.energy_manager.phone" style="float:right"
+                    href="tel:{{project.people.energy_manager.phone}}">{{project.people.energy_manager.phone}}</a>
+                </h4>
+              </ion-item>
+              <ion-item col-5 *ngIf="!!has_people && !!project.people.maintenance_manager.name">
+                <label>Maintenance manager</label>
+                <h4>
+                  <a
+                    href="mailto:{{project.people.maintenance_manager.email}}">{{project.people.maintenance_manager.name}}</a>
+                  <a *ngIf="!!project.people.maintenance_manager.phone" style="float:right"
+                    href="tel:{{project.people.maintenance_manager.phone}}">{{project.people.maintenance_manager.phone}}</a>
+                </h4>
+              </ion-item>
+              <ion-item col-5 *ngIf="!!has_people && !!project.people.hse_manager.name">
+                <label>HSE manager</label>
+                <h4>
+                  <a href="mailto:{{project.people.hse_manager.email}}">{{project.people.hse_manager.name}}</a>
+                  <a *ngIf="!!project.people.hse_manager.phone" style="float:right"
+                    href="tel:{{project.people.hse_manager.phone}}">{{project.people.hse_manager.phone}}</a>
+                </h4>
+              </ion-item>
+              <ion-col col-12>
+                <p style="padding: 2rem 0">They are estimated values based on generic insulation solutions, for a
+                  more accurate analysis an insulation solution designing, please contact your insulation expert:</p>
+              </ion-col>
+              <ion-col col-12 text-center *ngIf="!!licences.getData()">
+                <ion-row>
+                  <ion-col col-12>
+                    <img style="max-width: 3in" src="{{licences.getData().url_logo}}">
+                  </ion-col>
+                  <ion-col col-12>
+                    <strong>{{licences.getData().name}}</strong>
+                  </ion-col>
+                  <ion-col col-12>
+                    <a href="mailto:{{licences.getData().mail}}">{{licences.getData().mail}}</a>
+                  </ion-col>
+                  <ion-col col-12>
+                    <a href="{{licences.getData().url}}">{{licences.getData().url}}</a>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col col-5>
+            <h4 col-12 style="margin: 1.3rem .6rem"><strong>About TBI</strong></h4>
+            <ion-row>
+              <ion-col col-12 style="padding: 0 .6in 0 1rem">
+                <p>
+                  <strong>TBI</strong> (TIPCHECK Based Inspections) is an <strong>easy-to-use insulation self-inspection
+                    and
+                    reporting tool</strong> for anyone who wants to very quickly check and estimate how much energy and
+                  money
+                  saving potential a technical insulation system has to offer.
+                </p>
+                <p>
+                  <strong>TBI</strong> offers a <strong>conservative estimation of the amount of energy a component is
+                    losing</strong>. In addition it <strong>shows the potential savings</strong> if insulated or if an
+                  improved
+                  insulation system is being installed. The saving estimations are given in a range evaluating the
+                  performance
+                  of
+                  a
+                  typical basic and a realistic good insulation system. The estimation methodology is based on:
+                </p>
+                <ol>
+                  <li>EiiF’s vast TIPCHECK experience: In 2010 the European Industrial Insulation Foundation developed its
+                    insulation energy appraisal programme called Technical Insulation Performance Check.</li>
+                  <li>Simplified heat transfer formulas taken from the ISO 12241 Standard: Thermal insulation for building
+                    equipment and industrial installations – calculation rules.</li>
+                  <li>Generic values allowing a conservative estimation like using by default e.g. 0 m/s wind speed and
+                    horizontal
+                    as the orientation of the system.</li>
+                </ol>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    
+    <ng-template kendoPDFTemplate>
+      <div class="page-template">
+        <div class="header">
+          <pdf-header>Project: {{project.name}}</pdf-header>
+        </div>
+        <div class="footer">
+          <ion-grid class="footer" style="border-top: 1px solid #ccc">
+            <ion-row>
+              <ion-col col-11>
+                <b>Disclaimer:</b> You should not rely solely on the TBI software application(s) for determining the
+                performance of an
+                insulation system and/or the energy or cost saving potential. The TBI software applications allow you
+                to
+                quickly check the performance of an insulation system and the energy or cost saving potential roughly,
+                due to the influence of a number of factors, including data/input provided by the user. The software
+                applications are not meant to replace professional advice. Under no circumstance EiiF and/or any EiiF
+                member authorized to use the member version of the Software application will be liable for damages
+                occurring to persons and properties of any nature and/or any other damages or losses arising out of
+                the
+                use of the TBI software application(s) or any information or service obtained through it, including
+                direct,
+                indirect, consequential or incidental damages and losses.
+              </ion-col>
+              <ion-col col-1 text-right>
+                <img class="logo" src="{{images.TBI}}">
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+    </ng-template>
+
+  </kendo-pdf-export>
+  <ion-grid *ngIf="!!project">
+    <ion-row>
+      <ion-col text-center>
+        <button ion-button small color="royal" (click)="showDisclaimer()">Disclaimer</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding>
+      <ion-col col-4 no-padding>
+        <!-- <button ion-button small color="light" (click)="go_to_projects()">
+            <ion-icon visible-xs name="arrow-back"></ion-icon>
+            <span hidden-xs>Home</span>
+        </button> -->
+      </ion-col>
+      <ion-col col-4 text-center>
+        <tools></tools>
+      </ion-col>
+      <ion-col col-4 text-right>
+        <button [disabled]="!project" tabindex="15" ion-button small color="primary" (click)="next_action()">
+          <ion-icon visible-xs name="arrow-forward"></ion-icon>
+          <span hidden-xs>Next</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

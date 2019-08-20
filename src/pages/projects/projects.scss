@@ -1,0 +1,185 @@
+@import '../../scss/media';
+
+page-project {
+  ion-header {
+    button {
+      ion-icon {
+        font-size: 2.4rem !important;
+      }
+      .bar-button-md[icon-only] {
+        padding: 0 0 0 .5rem;
+    }
+    }
+  }
+
+  ion-col.checkeable {
+    overflow: hidden;
+    > div {
+      transition: margin linear 0.15s;
+      > * {
+        display: inline-block;
+      }
+      width: 54px;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 10px 0 0 -32px;
+      @include media("<tablet", "portrait"){
+        margin-top: 0;
+      }
+      &.exporting {
+        margin-left: -3px;
+      }
+    }
+  }
+  [license-alert] {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: rgb(241, 129, 88);
+    color: #fff;
+    position: absolute;
+    bottom: 3rem;
+
+    button {
+      margin-top: 1.5rem;
+    }
+  }
+
+  ion-grid[projects] {
+    background: #fff;
+    padding: 0;
+
+    .button-project-more {
+      font-size: 2rem;
+      margin: auto;
+      padding-left: 0.5rem;
+      padding-right: 0.75rem;
+    }
+
+    //box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    ion-icon[color="danger"] {
+      &:before {
+        font-size: 3rem;
+      }
+    }
+
+    &.projects {
+      margin-top: 0.5rem;
+      box-shadow: none;
+    }
+
+    .transition-width {
+      transition: width linear 1s;
+    }
+
+    svg#insulation {
+      width: 95%;
+      margin-top: 0.2rem;
+      margin-left: 0.25rem;
+    }
+
+    h5 {
+      padding: 0;
+      line-height: 1rem;
+    }
+
+    > ion-row {
+      &:not(:last-child) {
+        border-bottom: 1px dashed #aaa;
+      }
+
+      ion-col {
+        &.flex {
+          display: flex;
+          align-items: center;
+
+          h4 {
+            width: 100%;
+            text-align: center;
+          }
+        }
+
+        &.bg-gray {
+          background: #f8f8f8;
+        }
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      h1 {
+        font-size: 2rem;
+        @media (max-width: 575px) {
+          font-size: 1.4rem;
+        }
+        color: #333 !important;
+        margin: 0;
+      }
+
+      h1 + p {
+        margin: 0.5rem 0;
+        color: #aaa;
+        line-height: 1.5rem;
+      }
+
+      h5 {
+        color: #aaa;
+        margin: 1rem 0;
+        font-size: 1.2rem;
+        @media (max-width: 575px) {
+          display: inline-block;
+          margin: 0;
+          font-size: 1rem;
+        }
+        & + h5 {
+          @media (max-width: 575px) {
+          }
+        }
+      }
+
+      svg {
+        @media screen and (orientation: portrait) {
+          width: 90%;
+        }
+
+        @media screen and (orientation: landscape) {
+          width: 60%;
+          margin-left: 1rem;
+        }
+
+        height: auto;
+        display: block;
+
+        * {
+          fill: #aaa;
+        }
+      }
+    }
+  }
+
+  page-project {
+    ion-icon[name="menu"] {
+      margin: auto;
+      font-size: 3rem;
+    }
+    @media (max-width: 575px) {
+      ion-icon[name="menu"] {
+        font-size: 2rem;
+      }
+      [type-report] {
+        text-align: center;
+
+        svg {
+          width: 50% !important;
+          margin: auto;
+
+          &#insulation {
+            width: 65% !important;
+            margin: auto !important;
+          }
+        }
+      }
+    }
+  }
+}

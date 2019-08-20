@@ -1,0 +1,199 @@
+<div class="view-port">
+  <div id="default-zoom-value"></div>
+  <ion-grid id="result-grid" #resultGrid>
+    <ion-row *ngIf="show_savings">
+      <ion-col text-center col-12 no-padding>
+        <h5 *ngIf="!saving_lower" class="annual-saving-message big"><small><strong>Annual saving
+              potential</strong></small>
+          from {{(parent.report.result.annual_saving_from || 0) | number: '1.0-0'}}{{currency}} to
+          {{(parent.report.result.annual_saving_to || 0)| number: '1.0-0'}}{{currency}}
+        </h5>
+        <h5 *ngIf="!!saving_lower && 1==2" class="annual-saving-message">
+          Insulation System Ok
+        </h5>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center style="overflow: auto" style="padding: 0 10px">
+        <table [style.zoom]="zoom" cellspacing="0" cellpadding="0" border="0" class="result-chart"
+          [class.saving_lower]="saving_lower">
+          <thead>
+            <tr>
+              <th>
+                <div style="width: 25px; height: 1px"></div>
+              </th>
+              <th>
+                <div style="width: 0; height: 1px"></div>
+              </th>
+              <th>
+                <div style="width: 130px; height: 1px"></div>
+              </th>
+              <th>
+                <div style="width: 130px; height: 1px"></div>
+              </th>
+              <th>
+                <div style="width: 130px; height: 1px"></div>
+              </th>
+            </tr>
+            <tr>
+              <th class="scale" colspan="2" style="height: 20px; border-right: 1px solid #7f7f7f; text-align: right">
+                <span>{{scale.max / 10 | number: '1.1-1'}}</span>
+              </th>
+              <th class="dashed-right">
+                <!-- <div class="x-title white">Current</div> -->
+              </th>
+              <th>
+              </th>
+              <th *ngIf="!is_validation">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="section" rowspan="2">
+                <strong style="margin-top: 10px">
+                  <div>Annual</div>
+                  <div>Consumption</div>
+                </strong>
+                <span class="kwh">&nbsp;MWh<span *ngIf="unknow_surface">/m<sup>2</sup></span></span>
+              </td>
+              <td class="scale"></td>
+              <td class="b-line bar" rowspan="2">
+                <div style.height="{{bars.current.losses[0]}}px" class="gray">
+                  <span class="x-price">{{bars.current.losses[1] | number: '1.0-0'}}{{currency}}<span *ngIf="unknow_surface">/m<sup>2</sup></span>
+                  </span>
+                </div>
+              </td>
+              <td class="b-line bar dashed-left" rowspan="2">
+                <div style.height="{{bars.basic.losses[0]}}px" class="blue pattern">
+                  <span style="color: #4b71c1">{{bars.basic.losses[1] | number: '1.0-0'}}{{currency}}<span
+                      *ngIf="unknow_surface">/m<sup>2</sup></span></span>
+                </div>
+              </td>
+              <td *ngIf="!is_validation" class="b-line bar" rowspan="2">
+                <div style.height="{{bars.economical.losses[0]}}px" class="green pattern">
+                  <span style="color: #6daf3d">{{bars.economical.losses[1] | number: '1.0-0'}}{{currency}}<span
+                      *ngIf="unknow_surface">/m<sup>2</sup></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="scale">
+                <span>{{scale.min / 10 | number: '1.1-1'}} </span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody class="inverse">
+            <tr>
+              <td class="section" rowspan="2">
+                <strong style="margin-top: -15px">
+                  <div>Annual</div>
+                  <div>Saving</div>
+                </strong></td>
+              <td class="scale inverse">
+                <span>{{scale.min / 10 | number: '1.1-1'}}</span>
+              </td>
+              <td class="bar" rowspan="2">
+                <div style.height="{{bars.current.losses[0]}}px" class="gray opaque">
+                  <span class="x-price">
+                    <strong
+                      style="display: block; padding: 0!important; text-align: center">{{!is_validation ? 'current' : 'before'}}</strong>
+                    {{bars.current.losses[1] | number: '1.0-0'}}{{currency}}<span
+                      *ngIf="unknow_surface">/m<sup>2</sup></span>
+                  </span>
+                </div>
+              </td>
+              <td class="bar dashed-left" rowspan="2">
+                <div style.height="{{bars.basic.savings[0]}}px" class="blue">
+                  <span
+                    style.marginTop="{{bars.basic.savings[0] + 3}}px">{{bars.basic.savings[1] | number: '1.0-0'}}{{currency}}<span
+                      *ngIf="unknow_surface">/m<sup>2</sup></span></span>
+                </div>
+              </td>
+              <td *ngIf="!is_validation" class="bar" rowspan="2">
+                <div style.height="{{bars.economical.savings[0]}}px" class="green">
+                  <span style.marginTop="{{bars.economical.savings[0] + 3}}px">{{bars.economical.savings[1] | number:
+                  '1.0-0'}}{{currency}}<span *ngIf="unknow_surface">/m<sup>2</sup></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="scale inverse"></td>
+            </tr>
+            <tr>
+              <th colspan="2"
+                style="border-right: 1px solid #7f7f7f; height: 20px; text-align: right; padding-right: 5px">
+                <span>{{scale.max / 10 | number: '1.1-1'}}</span>
+              </th>
+              <th colspan="3"></th>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2"></th>
+              <th>
+                  <div>{{!is_validation ? 'current' : 'before'}}</div>
+                  <div>situation</div>
+              </th>
+              <th style="color: #4b71c1">
+                <div *ngIf="!is_validation">
+                  <div>basic</div>
+                  <div>insulation</div>
+                </div>
+                <div *ngIf="!!is_validation">
+                  <div>after</div>
+                  <div>insulation</div>
+                </div>
+              </th>
+              <th *ngIf="!is_validation" style="color: #6daf3d">
+                <div>
+                  <div>good</div>
+                  <div>insulation</div>
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th colspan="2" style="padding-top: 2rem">
+                <img src="{{images.CO2}}">
+              </th>
+              <th style="padding-top: 2rem" class="color">
+                {{parent.report.result.co2[!is_validation ? 0 : 3 ] | number: !show_advise ? '1.2-2' : '1.2-2'}} t<span
+                  *ngIf="unknow_surface">/m<sup>2</sup></span></th>
+              <th style="padding-top: 2rem" class="color">
+                {{parent.report.result.co2[!is_validation ? 1: 0] | number: !show_advise ? '1.2-2' : '1.2-2'}} t<span
+                  *ngIf="unknow_surface">/m<sup>2</sup></span></th>
+              <th style="padding-top: 2rem" *ngIf="!is_validation" class="color">
+                {{parent.report.result.co2[2] | number: !show_advise ? '1.2-2' : '1.2-2'}} t<span
+                  *ngIf="unknow_surface">/m<sup>2</sup></span></th>
+            </tr>
+          </tfoot>
+        </table>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!!show_advise && 1 == 2 && !parent.report.component.validation">
+      <ion-col class="result-advise">
+        <h4>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          {{parent.report.result.advise}}
+        </h4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-right style="padding-top: 2rem">
+        <button *ngIf="!!show_advise" ion-button id="scroll_button" outline (click)="parent.content.scrollToTop(500)">
+          <strong>^</strong>
+          <strong>TOP</strong>
+        </button>
+        <div class="row zoom-buttons">
+          <button ion-button small icon-only clear color="royal" [disabled]="zoom==3" (click)="do_zoom(.1)" style="margin-right: -1rem;margin-left: 0;width: 4rem;">
+            <ion-icon name="document-zoomin"></ion-icon>
+          </button>
+          <button ion-button small icon-only clear color="royal" [disabled]="zoom==.5" (click)="do_zoom(-.1)" style="margin-left: 0;width: 4rem;">
+            <ion-icon name="document-zoomout"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</div>

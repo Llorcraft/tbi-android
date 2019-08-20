@@ -1,0 +1,13 @@
+<ion-col col-10>
+  <ion-item class="edit_surface_material" [class.editable]="parent.edit_surface_material">
+    <ion-label stacked>Surface material [ε]</ion-label>
+    <ion-input tabindex="5" class="literal" (ionFocus)="parent.on_focus($event);parent.toggle_surface_material(true)" [value]="parent.report.component.fields.surface_material_friendly"
+      type="text"></ion-input>
+    <ion-input #surface_material tabindex="5" (ionFocus)="parent.on_focus($event)" class="numeric" (focusout)="parent.toggle_surface_material(false)"
+      (ionFocus)="parent.on_focus($event)" name="surface_material" required data-val-required="Please input Surface emissivity"
+      [ngModel]="parent.report.component.fields.surface_material | number: '1.2-4'"  type="tel" inputmode="numeric" [pattern]="patterns.REQUIRED_NUMBER" data-val-pattern="Please input a valid Surface emissivity" ></ion-input>
+  </ion-item>
+</ion-col>
+<ion-col col-2>
+  <more pull-left #material (change)="parent.set_surface_material(material.value, $event)" [type]="'materials'" modal-button></more>
+</ion-col>

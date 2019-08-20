@@ -1,0 +1,9 @@
+arreglar la navegacion de hotsurface
+
+Cantidad de reports por tipo
+2 custom
+2 maintenance
+2 safety
+1 insulation
+Deberia bloquearse hotsurface si existe alguno de energia
+

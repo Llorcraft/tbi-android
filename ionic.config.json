@@ -1,0 +1,7 @@
+{
+  "name": "TBI",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

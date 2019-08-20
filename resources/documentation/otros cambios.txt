@@ -1,0 +1,7 @@
+En las imagenes cambiar Close por Report y ocultar Take a picture
+Ver si se puede hacer mas pequeño el prompt de temperatura
+
+Si hay algun report de calculo desactivar el padre
+Main dimension es un número
+
+Summary Id en los genericos, por defecto aparecerá el final de la ruta (traffic, hotsurface, etc)

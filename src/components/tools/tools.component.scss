@@ -1,0 +1,22 @@
+tools {
+  text-align: center;
+
+  button {
+    ion-icon {
+      margin-left: 6px;
+    }
+
+    &.pushed {
+      box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .4);
+    }
+  }
+
+  @media (max-width: 575px) {
+    button {
+      width: 2.5rem;
+      .button-inner {
+        width: 85%
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<svg version="1.1" id="cube" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#211915;stroke-width:10;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#C23334;stroke-width:10;stroke-miterlimit:10;}
+	.st2{fill:#C23334;}
+	.st3{font-family:'ArialMT';}
+	.st4{font-size:57.6px;}
+</style>
+<rect x="48.8" y="23.2" class="st0" width="436.4" height="436.7"/>
+<line class="st1" x1="43.9" y1="459.6" x2="489.2" y2="459.6"/>
+<line class="st1" x1="48.8" y1="456.9" x2="48.8" y2="18.1"/>
+<text transform="matrix(1 0 0 1 252.0765 500)" class="st2 st3 st4">a</text>
+<text transform="matrix(1 0 0 1 11 252.8755)" class="st2 st3 st4">b</text>
+</svg>

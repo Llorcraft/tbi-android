@@ -1,0 +1,103 @@
+page-edit-project {
+  .scroll-content {
+    @include media("<tablet"){
+      padding-bottom: 50vh;
+      @include media("portrait"){
+        padding-bottom: 40vh;
+      }
+    }
+    @include media(">=tablet"){
+      padding-bottom: 50vh;
+      @include media("portrait"){
+        padding-bottom: 30vh;
+      }
+    }
+  }
+  
+  ion-item.error {
+    padding: 0 0 0 16px !important;
+    margin: .5rem 0 !important;
+    min-height: 0 !important;
+
+    ion-label {
+      color: red !important;
+      font-size: 1rem !important;
+      margin: 0 !important;
+    }
+
+    .input-cover {
+      border-bottom: 1px solid red;
+      background: rgba(255, 0, 0, .1);
+    }
+  }
+
+
+  ion-title.label {
+    div {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+      font-size: 1.2rem;
+      font-stretch: 100%;
+      font-style: normal;
+      font-weight: 400;
+      color: #999;
+    }
+  }
+
+  form {
+    overflow-y: scroll;
+  }
+
+  #document-list {
+    //height: calc(100% - .5rem);
+    overflow-y: auto;
+  }
+
+  #document-list ion-item ion-icon[name="md-remove-circle"] {
+    //margin-right: -60px;
+    //margin-left: 60px;
+    transition: margin ease-in-out .25s;
+  }
+
+  #document-list.editable ion-item ion-icon[name="md-remove-circle"] {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  #document-list ion-item ion-icon[name="document"] {
+    margin-left: 0;
+    transition: margin ease-in-out .25s;
+  }
+
+  ion-item {
+    input {
+      @media (max-width: 575px) {
+        font-size: 1.2rem !important
+      }
+    }
+  }
+
+  ion-title[text-left] .toolbar-title {
+    text-align: left !important more {
+      margin-top: 1.5rem;
+    }
+
+    ion-grid {
+
+      //height: 100% !important;
+      ion-row {
+        //height: 100% !important;
+
+        img {
+          width: 80%;
+          max-width: 300px;
+          height: auto;
+        }
+
+      }
+    }
+  }
+
+  ion-col {
+    position: initial !important;
+  }
+}

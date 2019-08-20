@@ -1,0 +1,125 @@
+@import "../../../../scss/media.scss";
+
+.modal-window-area {
+  ion-slide.swiper-slide {
+    align-items: flex-start;
+  }
+
+  .scroll-content {
+    overflow: hidden;
+
+    @include media("<tablet") {
+      overflow: auto;
+    }
+
+  }
+
+  .modal-wrapper {
+    @include media(">=tablet") {
+      height: 50%;
+      width: 80%;
+      top: 5%;
+      left: 10%;
+
+      @include media("landscape") {
+        height: 70%;
+        width: 60%;
+        top: 5%;
+        left: 20%;
+      }
+    }
+
+    @include media("<tablet") {
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    area-modal {
+      background: #fff;
+
+      .scroll-content {
+        margin-top: 4rem;
+        display: block;
+      }
+
+      [svg] {
+        width: 100%;
+        margin: auto;
+        svg {
+          @include media("<tablet") {
+            width: 96%!important;
+          }
+
+          margin-top: 0;
+        }
+
+        @include media(">=tablet") {
+          width: 80%;
+          height: auto;
+        }
+      }
+
+      ion-toolbar {
+        .toolbar-background {
+          background: #ccc !important;
+        }
+      }
+    }
+  }
+}
+
+@include media ("<tablet") {
+
+  .modal-window-area .modal-wrapper area-modal {
+    [svg] {
+      height: 110%;
+
+      @include media ("landscape") {
+        height: auto;
+        height: 50%;
+      }
+
+      text-align: center;
+      margin-bottom: -56%;
+
+      svg {
+        height: 100%;
+        margin: 0;
+      }
+    }
+
+    [svg=area-cube] {
+      @include media ("landscape") {
+        height: auto;
+        height: 40%;
+      }
+    }
+
+    [svg=area-circle] {
+      @include media ("landscape") {
+        height: auto;
+        height: 60%;
+      }
+    }
+  }
+
+  .modal-window-area {
+    ion-segment-button {
+
+      &.segment-md,
+      &.segment-button {
+        font-size: .8rem
+      }
+    }
+  }
+}
+
+[last-control] {
+  margin-bottom: 10rem;
+
+  @include media("portrait") {
+    margin-bottom: 30rem;
+  }
+}

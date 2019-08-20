@@ -1,0 +1,5 @@
+al regresar sin reportar se mantienen los datos del componente, tambien al reportar
+revisar la cantidad por tipos en projects que salga como en el summary
+Totales del summary
+No me sale el 2do comentario del damaged, creo que es porque no lo estoy cargando una vez guardado
+En el summary cdo es unknow tiene que salir €/m2

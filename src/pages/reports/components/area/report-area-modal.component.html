@@ -1,0 +1,152 @@
+<ion-toolbar>
+  <ion-segment [(ngModel)]="segment.value" color="primary" (ionChange)="on_segment_change($event)">
+    <ion-segment-button value="cube">
+      Prism
+    </ion-segment-button>
+    <ion-segment-button value="rectangle">
+      Rectangle
+    </ion-segment-button>
+    <ion-segment-button value="cilinder">
+      Cilinder
+    </ion-segment-button>
+    <ion-segment-button value="circle">
+      Circle
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+
+<ion-content>
+   <form [hidden]="segment.value!='cube'">
+    <ion-grid>
+      <ion-row>
+          <ion-col col-12>
+            <strong>* Only lateral walls</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-7>
+          <div svg="area-cube" padding></div>
+        </ion-col>
+        <ion-col col-5>
+          <ion-row>
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>a (m)</ion-label>
+                <ion-input type="number" (ionFocus)="on_focus($event)" tabindex="101" name="cube_a" id="cube_a" [(ngModel)]="width"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>b (m)</ion-label>
+                <ion-input type="number" (ionFocus)="on_focus($event)" tabindex="102" name="cube_deep" [(ngModel)]="deep"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-12 last-control>
+              <ion-item>
+                <ion-label stacked>h (m)</ion-label>
+                <ion-input type="number" (ionFocus)="on_focus($event)" tabindex="103" (keyup.enter)="key_enter()" name="cube_height" [(ngModel)]="height"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <form  [hidden]="segment.value!='rectangle'">
+    <ion-grid>
+      <ion-col col-12>
+          <strong>&nbsp;</strong>
+      </ion-col>
+    <ion-row>
+      <ion-col col-7>
+        <div svg="area-rectangle" padding></div>
+      </ion-col>
+      <ion-col col-5>
+        <ion-row>
+          <ion-col col-12>
+            <ion-item>
+              <ion-label stacked>a (m)</ion-label>
+              <ion-input (ionFocus)="on_focus($event)" type="number" tabindex="106" name="rectangle-a" id="rectangle-a" [(ngModel)]="width"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-12>
+            <ion-item last-control> 
+              <ion-label stacked>b (m)</ion-label>
+              <ion-input (ionFocus)="on_focus($event)" type="number" tabindex="107" name="rectangle-b" id="rectangle-b" (keyup.enter)="key_enter()" [(ngModel)]="height"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    </ion-grid>
+  </form>
+  <form [hidden]="segment.value!='cilinder'">
+    <ion-grid>
+        <ion-col col-12>
+            <strong>* Only lateral walls</strong>
+        </ion-col>
+      <ion-row>
+        <ion-col col-7>
+          <div svg="area-cilinder" padding></div>
+        </ion-col>
+        <ion-col col-5>
+          <ion-row>
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>h (m)</ion-label>
+                <ion-input (ionFocus)="on_focus($event)" type="number" tabindex="108" name="cilinder-h" id="cilinder-h" [(ngModel)]="height"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-12>
+              <ion-item last-control>
+                <ion-label stacked>r (m)</ion-label>
+                <ion-input (ionFocus)="on_focus($event)" type="number" tabindex="109" name="cilinder-radius" (keyup.enter)="key_enter()" [(ngModel)]="radius"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <form [hidden]="segment.value!='circle'">
+    <ion-grid>
+        <ion-col col-12>
+            <strong>&nbsp;</strong>
+        </ion-col>
+      <ion-row>
+        <ion-col col-7>
+          <div svg="area-circle" padding></div>
+        </ion-col>
+        <ion-col col-5>
+          <ion-row>
+            <ion-col col-12>
+              <ion-item last-control>
+                <ion-label stacked>r (m)</ion-label>
+                <ion-input (ionFocus)="on_focus($event)" type="number" tabindex="110" name="circel-r" id="circel-r" (keyup.enter)="key_enter()" [(ngModel)]="radius"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding>
+      <ion-col col-6 no-padding>
+        <button (click)="close()" tabindex="200" ion-button small color="light">
+            <ion-icon name="arrow-back"></ion-icon>
+            <span hidden-xs>&nbsp;Back</span>
+          </button>
+      </ion-col>
+      <ion-col col-6 no-padding>
+        <button (click)="calculate()" tabindex="201" id="area_calculate_btn" ion-button small pull-right>
+            <ion-icon visible-xs name="arrow-forward"></ion-icon>
+            <span hidden-xs>Report</span>
+          </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

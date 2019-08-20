@@ -1,0 +1,36 @@
+report-errors {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  >ion-col {
+    padding: .5rem !important;
+    background-color: rgba(255, 69, 0, .1);
+    display: inline-block;
+    color: orangered;
+    border: 1px solid orangered;
+    border-radius: .5rem;
+    ion-title {
+      >div {
+        color: orangered !important;
+        text-align: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+    }
+    p {
+      padding: 0 0 1rem;
+      margin: 0;
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      li {
+        @media (max-width: 575px) {
+          font-size: 1rem;
+        }
+        margin: .5rem 0;
+        list-style: none;
+      }
+    }
+  }
+}

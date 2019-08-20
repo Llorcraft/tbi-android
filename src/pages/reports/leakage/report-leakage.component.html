@@ -1,0 +1,101 @@
+<report-header [parent]="this"></report-header>
+
+<ion-content #content [ngClass]="{'scrollable-content': !report.result}">
+  <ion-grid [hidden]="view=='edit_picture'" class="fixed-col">
+    <ion-row>
+      <ion-col col-12 col-md-8 no-padding>
+        <form novalidate #form="ngForm" [hidden]="segment!='input'" (submit)="calculate()">
+          <ion-row>
+            <ion-col col-10 col-md-8>
+              <ion-item>
+                <ion-label stacked>Component/Location</ion-label>
+                <ion-input [disabled]="!editable" tabindex="1" (ionFocus)="on_focus($event)" name="location" required
+                  data-val-required="Please input Component/Location" [(ngModel)]="report.component.fields.location"
+                  type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2></ion-col>
+          </ion-row>
+          <ion-row [hidden]="true">
+            <ion-col>
+              <ion-item>
+                <ion-input type="hidden" name="pictures" required data-val-required="Please take a picture" [(ngModel)]="picture_qty"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12 col-md-10>
+              <ion-item>
+                <ion-label stacked>Summary Id</ion-label>
+                <ion-input tabindex="2" (ionFocus)="on_focus($event)" name="summary_id" [(ngModel)]="report.summary_id"
+                  required data-val-required="Please input summary id" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10 col-md-8>
+              <ion-item>
+                <ion-label stacked>Operational time (hrs/yrs)</ion-label>
+                <ion-input [disabled]="!editable" tabindex="3" (ionFocus)="on_focus($event)" name="operational_time"
+                  [(ngModel)]="report.component.fields.operational_time"  type="tel" inputmode="numeric" [pattern]="patterns.REQUIRED_NUMBER" data-val-pattern="Please input a valid Operational time" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2>
+              <more pull-left *ngIf="editable" #time (change)="report.component.fields.operational_time=time.value"
+                [type]="'time'" modal-button></more>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12 col-md-10>
+              <ion-item>
+                <ion-label stacked>Medium</ion-label>
+                <ion-input #after_time [disabled]="!editable" tabindex="4" (ionFocus)="on_focus($event)" (keyup.enter)="on_keypress($event)"
+                  name="medium" [(ngModel)]="report.component.fields.medium" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12 col-md-10>
+              <ion-item>
+                <ion-label stacked>Medium temperature (<sup>º</sup>C)</ion-label>
+                <ion-input [disabled]="!editable" tabindex="5" (ionFocus)="on_focus($event)" name="surface_temp"
+                  [pattern]="patterns.REQUIRED_NUMBER" data-val-pattern="Please input a valid Medium temperature"
+                  [(ngModel)]="report.component.fields.surface_temp" type="tel" inputmode="numeric"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12 col-md-10>
+              <ion-item>
+                <ion-label stacked>Comment</ion-label>
+                <ion-textarea rows="6" tabindex="6" (ionFocus)="on_focus($event)" (keyup.enter)="on_keypress($event)"
+                  [(ngModel)]="report.comment" name="comment"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </form>
+      </ion-col>
+
+      <ion-col col-12 col-md-4 no-padding>
+        <ion-row>
+          <ion-col col-12 picture-slide [parent]="this"   [report]="report"
+            [editable]="editable" (onStartEdit)="on_picture_start_edit($event)">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 no-padding *ngIf="view=='result' && (!!form && !form.invalid)">
+            <div report-result col-12 [parent]="this"></div>
+          </ion-col>
+          <ion-col col-12 padding [hidden]="!(view=='form' && !!errors.errors.length)">
+            <report-errors padding #errors col-12></report-errors>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <edit-picture *ngIf="view=='edit_picture'" [report]="report" [picture]="editing_picture"></edit-picture>
+
+</ion-content>
+
+<report-footer [parent]="this" [calculate_text]="'Report'"></report-footer>

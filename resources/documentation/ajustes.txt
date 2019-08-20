@@ -1,0 +1,7 @@
+En la pantalla del proyecto poner un tab para las propiedades y archivos
+Investigar como se puede hacer lo del teclado
+En la foto del proyecto solo sale el mensaje si tiene foto
+En el cambio de los iconos con el m2 quitar el circulo del interrogacion
+Surface temp limitar a 10 los marcadores totales y se pueden poner directamente, ademas se puede escribir a mano sin perder los marcadores
+En el calculo de las areas poner m2
+Operational time en horas

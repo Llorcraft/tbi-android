@@ -1,0 +1,1 @@
+export { InsulatedCompareTempValidator } from "./insulated-compare-temp.directive";

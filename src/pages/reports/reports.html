@@ -1,0 +1,310 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title>
+      {{project.name}}
+    </ion-title>
+  </ion-navbar>
+  <!-- <ion-segment [(ngModel)]="segment.value">
+    <ion-segment-button *ngFor="let option of segment.options; let i=index" [value]="i">
+      {{option}}
+    </ion-segment-button>
+  </ion-segment> -->
+</ion-header>
+
+<ion-content>
+  <ion-grid [ngSwitch]="type" v-center style="margin-top: -1rem">
+    <ng-container *ngSwitchCase="''">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card (click)="navigate_to('insulation')" [class.disabled]="disabled_for('insulation')">
+            <span svg="insulation"></span>
+            <h1>Insulation</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('safety')" (click)="navigate_to('safety')">
+            <span svg="safety"></span>
+            <h1>Safety</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('maintenance')" (click)="navigate_to('maintenance')">
+            <span svg="maintenance"></span>
+            <h1>Maintenance</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('custom')" on-tap="navigate_to_report(REPORT.CUSTOM, 'Other')">
+            <span svg="custom"></span>
+            <h1>Other</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'insulation'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card on-tap="navigate_to('insulation-uninsulated')">
+            <span svg="empty"></span>
+            <h1>Uninsulated</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card on-tap="navigate_to('insulation-insulated')">
+            <span svg="empty"></span>
+            <h1>Insulated</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0 *ngIf="report_name!='hot-surface'">
+          <ion-card on-tap="navigate_to('insulation', 'hot-surface' )">
+            <span svg="empty"></span>
+            <h1>Cold Insulation</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'insulation-uninsulated'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.UNINSULATED_EQUIPMENTS.PIPE, 'Uninsulated pipe')">
+            <span svg="pipe"></span>
+            <h1>Pipe</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.UNINSULATED_EQUIPMENTS.VALVE, 'Uninsulated valve')">
+            <span svg="valve"></span>
+            <h1>Valve</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.UNINSULATED_EQUIPMENTS.FLANGE, 'Uninsulated flange')">
+            <span svg="flange"></span>
+            <h1>Flange</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.UNINSULATED_EQUIPMENTS.SURFACE, 'Uninsulated surface')">
+            <span svg="surface"></span>
+            <h1>Surface</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'insulation-insulated'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.INSULATED_EQUIPMENTS.PIPE, 'Insulated pipe')">
+            <span svg="pipe-insulation"></span>
+            <h1>Pipe</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.INSULATED_EQUIPMENTS.SURFACE, 'Insulated surface')">
+            <span svg="surface"></span>
+            <h1>Surface</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-icon name="information-circle-outline" duration="3000" arrow tooltip="Damaged insulation and/or cladding"
+            positionV="top"></ion-icon>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.MANTENANCE.DAMAGED, 'Damaged')">
+            <span svg="damaged-insulation"></span>
+            <h1>Damaged</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'cold-insulation'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <!-- <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.COLD_INSULATION.ENERGY, 'Cold energy')"> -->
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to('insulation')">
+            <span svg="cold"></span>
+            <h1>Energy</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.COLD_INSULATION.CONDENSATION, 'Condensation')">
+            <span svg="ice-wet"></span>
+            <h1>Condensation</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-icon name="information-circle-outline" duration="3000" arrow tooltip="Damaged insulation and/or cladding"
+            positionV="top"></ion-icon>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.INSULATION.COLD_INSULATION.DAMAGED, 'Damaged')">
+            <span svg="damaged-insulation"></span>
+            <h1>Damaged</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'safety'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('insulation')" (click)="navigate_to('insulation', 'hot-surface' )">
+            <span svg="hot-surface"></span>
+            <h1>Hot Surface</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('safety')" on-tap="navigate_to_report(REPORT.SAFETY.FIRE_PROTECTION, 'Fire Protect')">
+            <span svg="fire-protection"></span>
+            <h1>Fire Protection</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('safety')" on-tap="navigate_to_report(REPORT.SAFETY.HOUSEKEEPING, 'Housekeeping')">
+            <span svg="housekeeping"></span>
+            <h1>Housekeeping</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('safety')" on-tap="navigate_to_report(REPORT.SAFETY.OTHER, 'Other')">
+            <span svg="safety"></span>
+            <h1>Other</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <ion-col  card-container col-md-3 col-sm-6 offset-md-3>
+          <ion-card [class.disabled]="disabled_for('safety')" on-tap="navigate_to_report(REPORT.SAFETY.TRAFFIC, 'Traffic')">
+            <span svg="traffic"></span>
+            <h1>Traffic</h1>
+          </ion-card>
+        </ion-col>
+        
+      </ion-row> -->
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'maintenance'">
+      <ion-row>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-icon name="information-circle-outline" duration="3000" arrow tooltip="Damaged insulation and/or cladding"
+            positionV="top"></ion-icon>
+          <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.DAMAGED, 'Damaged')">
+            <span svg="damage-insulation"></span>
+            <h1>Damaged</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.CONDENSATION, 'Condensation')">
+            <span svg="ice-wet"></span>
+            <h1>Condensation</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.LEAKAGE, 'Leakage')">
+            <span svg="leakage"></span>
+            <h1>Leakage</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-8 offset-md-2 col-12 offset-0>
+          <ion-card [class.disabled]="disabled_for('custom')" on-tap="navigate_to_report(REPORT.CUSTOM, 'Other')">
+            <span svg="maintenance"></span>
+            <h1>Other</h1>
+          </ion-card>
+        </ion-col>
+        <!-- <ion-col  card-container col-md-3 col-sm-6 offset-md-2>
+          <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.STRUCTURAL, 'Structural')">
+            <span svg="structural"></span>
+            <h1>Structural</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col  card-container col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.MECHANICAL, 'Mechanical')">
+            <span svg="mechanical"></span>
+            <h1>Mechanical</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col  card-container col-md-3 col-sm-6>
+            <ion-card [class.disabled]="disabled_for('maintenance')" on-tap="navigate_to_report(REPORT.MANTENANCE.ELECTRICAL, 'Electrical')">
+            <span svg="electrical"></span>
+            <h1>Electrical</h1>
+          </ion-card>
+        </ion-col> -->
+      </ion-row>
+    </ng-container>
+
+    <!-- <ng-container *ngSwitchCase="'hot-surface'">
+      <ion-row *ngIf="segment.value==0">
+        <ion-col card-container offset-md-3 col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.UNINSULATED_EQUIPMENTS.PIPE, 'Uninsulated pipe')">
+            <span svg="pipe"></span>
+            <h1>Pipe</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.UNINSULATED_EQUIPMENTS.VALVE, 'Uninsulated valve')">
+            <span svg="valve"></span>
+            <h1>Valve</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col [class.disabled]="disabled_for('insulation')" card-container offset-md-3 col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.UNINSULATED_EQUIPMENTS.FLANGE, 'Uninsulated flange')">
+            <span svg="flange"></span>
+            <h1>Flange</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.UNINSULATED_EQUIPMENTS.SURFACE, 'Uninsulated surface')">
+            <span svg="surface"></span>
+            <h1>Surface</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="segment.value==1">
+        <ion-col card-container col-md-3 col-sm-6 offset-md-2>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.INSULATED_EQUIPMENTS.PIPE, 'Insulated pipe')">
+            <span svg="pipe-insulation"></span>
+            <h1>Pipe</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-3 col-sm-6>
+          <ion-icon name="information-circle-outline" duration="3000" arrow tooltip="Damaged insulation and/or cladding"
+            positionV="top"></ion-icon>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.INSULATED_EQUIPMENTS.DAMAGED, 'Damaged')">
+            <span svg="damaged-insulation"></span>
+            <h1>Damaged</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col card-container col-md-3 col-sm-6>
+          <ion-card [class.disabled]="disabled_for('insulation')" on-tap="navigate_to_report(REPORT.SAFETY.HOT_SURFACE.INSULATED_EQUIPMENTS.SURFACE, 'Insulated surface')">
+            <span svg="surface"></span>
+            <h1>Surface</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+    </ng-container> -->
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding>
+      <ion-col col-4 no-padding>
+        <button ion-button small color="light" (click)="go_back()">
+          <ion-icon name="arrow-back"></ion-icon>
+          <span hidden-xs>&nbsp;Back</span>
+        </button>
+      </ion-col>
+      <ion-col col-4 text-center>
+        <tools></tools>
+      </ion-col>
+      <ion-col col-4 no-padding text-right *ngIf="!component?.id">
+        <button *ngIf="type==''" ion-button small color="royal" on-tap="open_summary()">
+          <ion-icon name="document-summary"></ion-icon>
+          <span hidden-xs>&nbsp;Summary</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

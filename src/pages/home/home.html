@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{project.name}}
+    </ion-title>
+    <!-- <ion-buttons end>
+      <button ion-button icon-only (click)="takePicture()">
+        <ion-icon name="camera"></ion-icon>
+      </button>
+    </ion-buttons> -->
+    <!-- <ion-buttons start>
+        <button ion-button color="royal" (click)="back()">
+          <ion-icon name="arrow-back"></ion-icon>&nbsp;Back
+        </button>
+      </ion-buttons> -->
+    <ion-buttons end>
+      <button ion-button color="royal" (click)="takePicture()">Docs</button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content id="page2">
+    <ion-list style="margin-top: 1.5rem" *ngFor="let cg of project.components_groups">
+      <ion-list-header>
+        <h2>{{cg.name}}</h2>
+      </ion-list-header>
+      <ion-item (touchend)="on_touch_end()" (touchstart)="on_touch_start(c)" *ngFor="let c of cg.components" (click)="goto_component(c)">
+        <ion-thumbnail item-start>
+          <img [src]="c.icon">
+        </ion-thumbnail>
+        <h2>{{c.name}}</h2>
+        <p style="white-space: normal">{{c.show_long_desc ? c.long_desc : c.short_desc}}</p>
+        <ion-badge item-end>{{c.reports.length}}</ion-badge>
+      </ion-item>
+    </ion-list>
+</ion-content>
+

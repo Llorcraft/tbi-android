@@ -1,0 +1,18 @@
+<ng-container>
+<svg *ngFor="let marker of picture?.markers_with_values"
+  (click)="edit_marker(marker)"
+  version="1.1" 
+  xmlns="http://www.w3.org/2000/svg" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  x="0" y="0"
+  viewBox="0 0 366.1 485.2" 
+  xml:space="preserve"
+  [style.transform]="marker.position">
+  <g [attr.class]="marker.color">
+    <circle cx="183.1" cy="181" r="130.8"/>
+    <path d="M184,0C83.5,0,2,81.5,2,182s151.6,303.3,182,303.3c30.3,0,182-202.8,182-303.3S284.4,0,184,0z M184,303.3
+	c-66.9,0-121.3-54.4-121.3-121.3S117.1,60.7,184,60.7c66.9,0,121.3,54.4,121.3,121.3S250.9,303.3,184,303.3z" />
+    <text [attr.transform]="marker.transform">{{marker.temperature}}</text>
+  </g>
+</svg>
+<img [src]="picture?.picture" width="100%" height="auto" (click)="create_marker($event)">

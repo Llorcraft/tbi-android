@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title>Project list</ion-title>
+    <ion-buttons end [style.visibility]="exporting ? 'hidden': 'visible'">
+      <button ion-button icon-only small color="light" on-tap="toggle_export_data()">
+        <ion-icon name="document-tbi"></ion-icon>
+      </button>
+      <button ion-button icon-only small color="light" on-tap="create()">
+        <ion-icon name="md-add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid projects hidden-xs style="margin: -1rem 0">
+    <ion-row class="row">
+      <ion-col col-1>
+      </ion-col>
+      <ion-col col-0 col-sm-2>
+      </ion-col>
+      <ion-col class="col col-12 col-sm-10">
+        <ion-row col-sm-12>
+          <ion-col class="col" col-12>
+            <h1 no-margin no-padding></h1>
+          </ion-col>
+          <ion-col col-12 col-sm-8 no-padding>
+          </ion-col>
+          <ion-col class="flex bg-gray" col-2 col-sm-1 type-report svg="insulation">
+          </ion-col>
+          <ion-col class="flex" col-2 col-sm-1 type-report svg="safety">
+          </ion-col>
+          <ion-col class="flex bg-gray" col-2 col-sm-1 type-report svg="maintenance">
+          </ion-col>
+          <ion-col class="flex" col-2 col-sm-1 type-report svg="custom">
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid projects class="projects" col-12>
+    <ion-row *ngFor="let p of projects">
+      <ion-col col-1 text-right class="flex vertical-middle" class="checkeable">
+        <div>
+          <ion-checkbox *ngIf="exporting" style="zoom:1.2;margin:.25rem 0 0 1.5rem" [(ngModel)]="p.selected" [checked]="p.selected" color="primary"></ion-checkbox>
+          <ion-icon *ngIf="!exporting" class="button-project-more" (click)="ask_for_action(p, $event)" slot="icon-only" name="md-more">
+          </ion-icon>
+        </div>
+      </ion-col>
+      <ion-col col-0 col-sm-2 hidden-xs id="project-{{p.id}}" (click)="!exporting && navigate_to_reports(p)">
+        <img [src]="p.picture || images.NON_PICTURE">
+      </ion-col>
+      <ion-col class="transition-width"
+        [ngClass]="{'col-12 col-sm-10': !editing_mode, 'col-11 col-sm-9': editing_mode}">
+        <ion-row col-sm-12>
+          <ion-col col-12 no-padding (tap)="navigate_to_reports(p)">
+            <h1 no-margin no-padding>{{p.name}}</h1>
+          </ion-col>
+          <ion-col col-12 col-sm-8 no-padding (click)="navigate_to_reports(p)">
+            <h5 no-margin no-padding>Energy price: {{p.price}} {{p.currency}}/{{p.measure}}</h5>
+            <h5 no-margin no-padding>CO<sub>2</sub> emissions: {{p.co2}} grCO<sub>2</sub>/{{p.m_measure}}</h5>
+
+          </ion-col>
+          <ion-col hidden-xs col-2 col-sm-1 class="flex bg-gray">
+            <h4 no-margin>{{get_by_type(p, 'pipe|surface|flange|valve').length}}</h4>
+          </ion-col>
+          <ion-col hidden-xs col-2 col-sm-1 class="flex">
+            <h4 no-margin>{{get_by_type(p, 'safety').length}}</h4>
+          </ion-col>
+          <ion-col hidden-xs col-2 col-sm-1 class="flex bg-gray">
+            <h4 no-margin>{{get_by_type(p, 'maintenance').length}}</h4>
+          </ion-col>
+          <ion-col hidden-xs col-2 col-sm-1 class="flex">
+            <h4 no-margin>{{get_by_type(p, 'custom').length}}</h4>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div license-alert *ngIf="1==2 && licences.type=='BASIC'" col-10 offset-1>
+    <ion-grid no-padding>
+      <ion-row no-padding>
+        <ion-col col-12 no-padding>
+          La versión BASIC solo le permite crear 5 componentes, contrate la versión PRO o ENTERPRISE y disfrute de
+          todas sus ventajas.
+        </ion-col>
+        <ion-col col-4 offset-8 text-right>
+          <button ion-button small round color="light" outline>Upgrade NOW</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding *ngIf="!!exporting">
+      <ion-col col-3 text-left no-padding>
+        <button tabindex="17" ion-button small color="light" on-tap="toggle_export_data()">
+          <ion-icon name="arrow-back"></ion-icon>
+          <span hidden-xs>&nbsp;Back</span>
+        </button>
+      </ion-col>
+      <ion-col col-6 text-center no-padding></ion-col>
+      <ion-col col-3 text-right no-padding>
+        <button [disabled]="!can_export" ion-button small color="royal" on-tap="export_data()">
+          <ion-icon visible-xs name="arrow-forward">
+          </ion-icon><span hidden-xs>Next</span>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row no-padding *ngIf="!exporting">
+      <ion-col col-3 text-left no-padding>
+        <!-- <button *ngIf="licences.type=='PRO' || 1==1" ion-button small color="light" (click)="create_db()">
+          <ion-icon visible-xs name="cloud-download"></ion-icon>
+          <span hidden-xs>Download data</span>
+        </button> -->
+      </ion-col>
+      <ion-col col-6 text-center no-padding>
+        <tools></tools>
+      </ion-col>
+      <ion-col col-3 text-right no-padding>
+        <button *ngIf="licences.type!='PRO'" ion-button small color="royal" (click)="go_next()">
+          <ion-icon visible-xs name="arrow-forward">
+          </ion-icon><span hidden-xs>Next</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

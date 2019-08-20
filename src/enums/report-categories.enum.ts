@@ -1,0 +1,9 @@
+export enum ReportCategories {
+  OTHERS = 0,
+  INSULATION,
+  SAFETY,
+  MANTENANCE,
+  ENERGY_AND_SAVINGS,
+  ENERGY,
+  HOT_SURFACE
+}

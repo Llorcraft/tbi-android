@@ -1,0 +1,11 @@
+<ion-col col-12 no-padding *ngIf="!!errors?.length">
+  <ion-title col-12>Warnings</ion-title>
+  <!-- <p>Report contains error, resuelva los errores para poder realizar el cálculo.</p> -->
+  <ul>
+    <li *ngFor="let e of errors">
+      {{e.message}}
+    </li>
+  </ul>
+  <!-- <button (tap)="understood()" style="margin-top: 2rem" offset-3 col-6 block ion-button small outline color="danger">Understood</button> -->
+</ion-col>
+

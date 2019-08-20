@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title>
+      {{parent.report.name}}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="parent.view!='edit_picture'" [disabled]="!parent.show_pdf_button" color="light" on-tap="parent.export_pdf()">
+          <ion-icon name="document-pdf"></ion-icon>
+      </button>
+      <button ion-button *ngIf="parent.view=='edit_picture'" color="light" on-tap="parent.delete_picture()">
+        <ion-icon name="md-trash"></ion-icon><span hidden-xs>&nbsp;Remove</span>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>

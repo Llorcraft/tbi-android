@@ -1,0 +1,26 @@
+.modal-window-markers {
+  .scroll-content{
+    overflow: auto!important;
+  }
+  .modal-wrapper {
+    $height: 550;
+    $width: 300;
+    height: $height * 1px;
+    width: $width * 1px;
+    top: calc(50% - 275px);
+    left: calc(50% - 150px);
+    background: #fff;
+    area-modal {
+      background: #fff;
+      .scroll-content {
+        display: block;
+      }
+    }
+  }
+
+  ion-toolbar {
+    .toolbar-background {
+      background: #fff !important;
+    }
+  }
+}

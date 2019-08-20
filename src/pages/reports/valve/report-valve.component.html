@@ -1,0 +1,157 @@
+<report-header [parent]="this"></report-header>
+
+<ion-content #content [ngClass]="{'scrollable-content': !report.result}">
+  <ion-grid [hidden]="view=='edit_picture'" class="fixed-col">
+    <ion-row>
+      <ion-col col-12 col-md-8 no-padding>
+        <form novalidate #form="ngForm" [hidden]="segment!='input'" (submit)="calculate()">
+          <ion-input type="hidden" name="surface_material_range" [(ngModel)]="surface_material_range" required
+            data-val-required="Surface material emissivity must be between 0 and 1"></ion-input>
+          <ion-input type="hidden" name="operational_time_range" [(ngModel)]="operational_time_range" required
+            data-val-required="Operational time must be between 0 and 8760 hours"></ion-input>
+          <ion-input type="hidden" name="temp_range_diff" [(ngModel)]="temp_range_diff" required
+            data-val-required="Surface temperature must be at least 5°C diferent than ambient temperature"></ion-input>
+          <ion-input type="hidden" name="diameter_low" [(ngModel)]="diameter_low" required
+            data-val-required="Diameter must be > 0mm"></ion-input>
+          <ion-input type="hidden" name="length_low" [(ngModel)]="length_low" required
+            data-val-required="Length must be > 0 m"></ion-input>
+          <ion-input type="hidden" name="items_low" [(ngModel)]="items_low" required
+            data-val-required="Number of items must be > 0"></ion-input>
+          <ion-input type="hidden" name="surface_temp_range" [(ngModel)]="surface_temp_range" required
+            data-val-required="Surface temperature must be < 1000°C"></ion-input>
+          <ion-input type="hidden" name="pictures" required data-val-required="Please take a picture"
+            [(ngModel)]="picture_qty"></ion-input>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item>
+                <ion-label stacked>Component/Location</ion-label>
+                <ion-input [disabled]="!!report.component.validation" tabindex="1" (ionFocus)="on_focus($event)"
+                  name="location" required data-val-required="Please input Component/Location"
+                  [(ngModel)]="report.component.fields.location" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item>
+                <ion-label stacked>Number of items</ion-label>
+                <ion-input [disabled]="!!report.component.validation" tabindex="3" (ionFocus)="on_focus($event)"
+                  name="number" required data-val-required="Please input Number of items"
+                  [(ngModel)]="report.component.fields.number" type="tel" inputmode="numeric"
+                  [pattern]="patterns.REQUIRED_NUMBER" data-val-pattern="Please input a valid Number of items" min="0">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item>
+                <ion-label stacked>Operational time (hrs/yrs)</ion-label>
+                <ion-input (ionChange)="reset_result()" [disabled]="!!report.component.validation" readonly tabindex="2"
+                  *ngIf="!!report.component.fields.operational_time_index"
+                  [value]="friendy_more('TIMES',  report.component.fields.operational_time_index)"></ion-input>
+                <ion-input (ionChange)="reset_result()" #before_time (ionFocus)="on_focus($event)"
+                  *ngIf="!report.component.fields.operational_time_index" [disabled]="!!report.component.validation"
+                  tabindex="3" required data-val-required="Please input Operational time"
+                  [pattern]="patterns.REQUIRED_NUMBER" data-val-pattern="Please input a valid Operational time"
+                  name="operational_time" [(ngModel)]="report.component.fields.operational_time" type="tel"
+                  inputmode="numeric"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2>
+              <more pull-left [hidden]="!!report.component.validation" #time (change)="set_operational_time(time)"
+                [type]="'time'" modal-button></more>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item>
+                <ion-label stacked>Diameter (mm)</ion-label>
+                <ion-input tabindex="5" #after_time (ionFocus)="on_focus($event)" name="nominal_diameter" required
+                  data-val-required="Please input Diameter" [(ngModel)]="report.component.fields.nominal_diameter"
+                  type="tel" inputmode="numeric" [pattern]="patterns.REQUIRED_NUMBER"
+                  data-val-pattern="Please input a valid Diameter"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item class="edit_surface_material" [class.editable]="edit_surface_material">
+                <ion-label stacked>Surface material [ε]</ion-label>
+                <ion-input (ionChange)="reset_result()" readonly tabindex="6" *ngIf="!!report.component.fields.surface_material_index"
+                  [value]="friendy_more('MATERIALS', report.component.fields.surface_material_index)"></ion-input>
+                <ion-input (ionChange)="reset_result()" #before_material (ionFocus)="on_focus($event)"
+                  *ngIf="!report.component.fields.surface_material_index" tabindex="6" name="surface_material" required
+                  data-val-required="Please input Surface emissivity" [pattern]="patterns.REQUIRED_NUMBER"
+                  data-val-pattern="Please input a valid Surface emissivity"
+                  [(ngModel)]="report.component.fields.surface_material" type="tel" inputmode="numeric"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2>
+              <more pull-left #material (change)="set_surface_material(material)" [type]="'materials'" modal-button>
+              </more>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-md-7 col-7 class="pr-0">
+              <ion-item class="pr-0">
+                <ion-label stacked>Surface temp<span hidden-xs>erature</span> (<sup>º</sup>C)</ion-label>
+                <ion-input tabindex="7"
+                  [style.visibility]="report.component.fields.unknow_surface_temp ? 'hidden' : 'visible'"
+                  #after_material (ionFocus)="on_focus($event)" scroll="-80" name="surface_temp" required
+                  data-val-required="Please input Surface temperature" [pattern]="patterns.REQUIRED_NUMBER"
+                  data-val-pattern="Please input a valid  Surface temperature"
+                  [(ngModel)]="report.component.fields.surface_temp" type="tel" inputmode="numeric"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-md-3 col-4 toggle-container>
+              <ion-item>
+                <ion-label stacked unknown>Unknown</ion-label>
+                <ion-toggle [disabled]="!!report.component.validation" style="padding-left:0"
+                  [(ngModel)]="report.component.fields.unknow_surface_temp" (ionChange)="toggle_know_temp()"
+                  name="unknow_surface_temp"></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2>
+              <!-- <medium-temp #medium (change)="report.component.fields.surface_temp=medium.value" modal-button pull-left></medium-temp> -->
+              <medium-temp #medium [report]="report" modal-button pull-left></medium-temp>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-10>
+              <ion-item>
+                <ion-label stacked>Ambient temperature (<sup>º</sup>C)</ion-label>
+                <ion-input #ambient_temp tabindex="8" (ionFocus)="on_focus($event)" (keyup.enter)="on_keypress($event)"
+                  name="ambient_temp" [pattern]="patterns.REQUIRED_NUMBER"
+                  data-val-pattern="Please input a valid Ambient temperature" required
+                  data-val-required="Please input Ambient temperature"
+                  [(ngModel)]="report.component.fields.ambient_temp" type="tel" inputmode="numeric"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2></ion-col>
+          </ion-row>
+        </form>
+      </ion-col>
+      <ion-col col-12 col-md-4 no-padding>
+        <ion-row>
+          <ion-col col-12 picture-slide [parent]="this" [input]="after_material" [report]="report" [editable]="editable"
+            (onStartEdit)="on_picture_start_edit($event)">
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 no-padding *ngIf="view=='result' && (!!form && !form.invalid)">
+        <div report-result col-12 [parent]="this"></div>
+      </ion-col>
+      <ion-col col-12 padding [hidden]="!(view=='form' && !!errors.errors.length)">
+        <report-errors padding #errors col-12></report-errors>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <edit-picture *ngIf="view=='edit_picture'" [report]="report" [picture]="editing_picture"></edit-picture>
+
+</ion-content>
+
+<report-footer [parent]="this"></report-footer>

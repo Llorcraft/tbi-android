@@ -1,0 +1,66 @@
+@import "./cards.scss";
+
+[card-container] {
+  text-align: center;
+
+  ion-card {
+    margin: 1rem 0 0 !important;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+
+    span[svg] {
+      height: 7rem;
+      padding: 0 1rem 1.5rem 1.5rem;
+    }
+  }
+}
+
+ion-card {
+  span[svg] {
+    svg {
+      height: 90% !important;
+      width: auto !important;
+
+      &#insulation {
+        height: 100% !important;
+      }
+
+      g,
+      path {
+        fill: #fff;
+      }
+
+      &+h1,
+      &+h3 {
+        color: #fff;
+      }
+
+      line {
+        stroke: #fff;
+      }
+    }
+  }
+  span[svg=empty]{
+    width: 0;
+    padding: 0 0 1.5rem 0;
+
+    &+h1 {
+      text-align: center;
+      width: calc(100%);
+      margin-left: -2rem!important;
+    }
+  }
+}
+
+ion-icon[tooltip] {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 600;
+}

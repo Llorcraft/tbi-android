@@ -1,0 +1,178 @@
+report-pdf-page {
+  output[page-number] {
+    position: absolute;
+    right: 0;
+    margin-top: -.7in;
+    &:after {
+      content: "Page " attr(page-number);
+    }
+  }
+  img.logo {
+    display: inline-block;
+    height: 3.5rem !important;
+    margin: 1rem 0 0;
+  }
+  .zoom-buttons {
+    display: none;
+  }
+  ion-content {
+    &.creating-pdf {
+      .hide-pdf {
+        display: block;
+        svg {
+          width: 6in;
+        }
+        ion-icon {
+          animation: rotation 0.5s infinite linear;
+        }
+      }
+    }
+  }
+  .scroll-content {
+    //opacity: 0;
+    height: 100vh !important;
+    .hide-pdf {
+      display: none;
+      height: calc(100vh);
+      width: calc(100vw);
+      position: absolute;
+      background: #fff;
+      z-index: 20000;
+      align-items: center;
+      justify-items: center;
+      flex-direction: column;
+      display: none;
+
+      ion-icon {
+        font-size: 10rem;
+        color: #488aff;
+        animation: none;
+        margin-top: 3rem;
+      }
+    }
+  }
+  ion-grid.report-grid-pdf {
+    margin: 2rem;
+    display: block;
+
+    .page-break {
+      counter-reset: page-number;
+    }
+    #scroll_button {
+      display: none;
+    }
+    table.result-chart {
+      zoom: 1 !important;
+      font-size: 1rem !important;
+    }
+    ion-row {
+      ion-col {
+        > ion-item {
+          &[col-5] {
+            display: inline-block;
+            width: 45%;
+          }
+          &:nth-child(2n) {
+            margin-left: 10%;
+          }
+          border-top: none !important;
+          padding: 0;
+          margin: 0;
+          min-height: 0 !important;
+          &.item-md {
+            &[col-12] {
+              display: inline-block;
+              width: 100%;
+            }
+            &[col-6] {
+              display: inline-block;
+              width: 49.5%;
+            }
+            &[col-4] {
+              display: inline-block;
+              width: 33%;
+            }
+            &[col-3] {
+              display: inline-block;
+              width: 25%;
+            }
+            &[col-11] {
+              display: inline-block;
+              width: 100%;
+            }
+            font-size: 1.2rem;
+          }
+          ion-label {
+            margin: 0 !important;
+          }
+          label {
+            padding: 0;
+            margin: 0 !important;
+            font-size: 80%;
+            -webkit-box-flex: 0;
+            -webkit-flex: 0 0 100%;
+            -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+            width: 100%;
+            max-width: 100%;
+            color: rgb(84, 84, 84);
+            + h4 {
+              margin: 0 0 !important;
+              font-size: 90%;
+              -webkit-box-flex: 0;
+              -webkit-flex: 0 0 100%;
+              -ms-flex: 0 0 100%;
+              flex: 0 0 100%;
+              width: 100%;
+              max-width: 100%;
+              min-height: 29px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .pdf-report-page-template {
+    // .page-break {
+    //   counter-reset: page-number 1;
+    // }
+    > ion-grid.header {
+      counter-increment: page-number;
+      border: 1px solid rgb(48, 84, 150);
+      img {
+        height: 64px !important;
+        width: auto !important;
+      }
+      .tickcheck {
+        color: rgb(48, 84, 150);
+        font-size: 2rem;
+        margin: 0.5rem 0 0;
+      }
+    }
+    > ion-grid.footer {
+      border-top: 1px solid rgb(48, 84, 150);
+      font-size: 0.8rem;
+    }
+  }
+
+  .header-spacer {
+    height: 5rem;
+    &:after {
+      content: "Page " attr(page-number) " of " attr(page-count);
+      position: absolute;
+      right: 1in;
+      margin-top: 2rem;
+      white-space: nowrap;
+    }
+  }
+  ion-col[page-number] {
+    &:after {
+      content: "Page " attr(page-number) " of " attr(page-count);
+      position: absolute;
+      text-align: right;
+      margin-top: -1.2rem;
+      white-space: nowrap;
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,139 @@
+<ion-content style="width: 100vw; height: 100vh;"
+  [ngClass]="{'creating-pdf': creating_pdf}">
+  <div class="hide-pdf">
+    <div text-center>
+      <ion-icon color="royal" name="refresh"></ion-icon>
+    </div>
+  </div>
+  <kendo-pdf-export #pdf paperSize="A4" margin="0 4cm 0 5cm" [scale]="0.5" landscape="false" forcePageBreak=".page-break">
+    <ion-grid class="report-grid-pdf" style="margin-top: 6rem" no-padding>
+      <output  page-number="1"></output>
+      <ion-row no-padding>
+        <h4 col-12 style="margin:0 0 1rem; padding-left: 0">{{report.component.fields.location}}: {{report.summary_id}}</h4>
+        <ion-col col-7>
+          <ion-item col-5>
+            <label>Project</label>
+            <h4>{{report.component.project.name}}</h4>
+          </ion-item>
+          <ion-item col-5>
+            <label>Component Location</label>
+            <h4>{{report.component.fields.location}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="!report.energy">
+            <label>Summary id</label>
+            <h4>{{report.summary_id}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface|pipe|valve|flange')">
+            <label>Energy cost ({{report.component.project.currency}})</label>
+            <h4>{{report.component.project.price}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface|pipe|valve|flange')">
+            <label>CO<sub>2</sub> emission factor (grCO<sub>2</sub>/kWh)</label>
+            <h4>{{report.component.project.co2}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('pipe|valve|flange')">
+            <label>Diameter (mm)</label>
+            <h4>{{report.component.fields.nominal_diameter}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('pipe')">
+            <label>Length (m)</label>
+            <h4>{{report.component.fields.length}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('valve|flange')">
+            <label>Nº of items (m)</label>
+            <h4>{{report.component.fields.number}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface|pipe|valve|flange')">
+            <label>Operational time</label>
+            <h4>{{report.component.fields.operational_time}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface')">
+            <label>Surface (m<sup>2</sup>)</label>
+            <h4>{{report.component.fields.unknow_surface ? 'Unknow' : report.component.fields.surface}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface|pipe|valve|flange')">
+            <label>Surface material</label>
+            <h4>{{report.component.fields.friendly_surface_material}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="!report.component.fields.unknow_surface && report.energy">
+            <label>Surface temperature (&deg;C)</label>
+            <h4>{{report.component.fields.surface_temp}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="!!report.component.fields.unknow_surface">
+            <label>Medium temperature (&deg;C)</label>
+            <h4>{{report.component.fields.surface_temp}}
+              ({{report.component.fields.unknow_surface_temp == 1 ? 'Gas' : 'Liquid'}})</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('surface|pipe|valve|flange')">
+            <label>Ambient temperature (&deg;C)</label>
+            <h4>{{report.component.fields.ambient_temp}}</h4>
+          </ion-item>
+          <ion-item col-11 style="margin-left: 0" *ngIf="!!report.component.fields.damaged_cladding.length && !!report.component.fields.damaged_cladding[0]">
+            <label>Damaged cladding</label>
+            <h4>{{report.component.fields.damaged_cladding_friendly}}</h4>
+          </ion-item>
+          <ion-item col-11 style="margin-left: 0" *ngIf="!!report.component.fields.damaged_insulation.length && !!report.component.fields.damaged_insulation[0]">
+            <label>Damaged insulation</label>
+            <h4>{{report.component.fields.damaged_insulation_friendly}}</h4>
+          </ion-item>
+          <ion-item col-5 *ngIf="report.is('condensation')">
+            <label>Condensation</label>
+            <h4>{{report.component.fields.condensation[0] ? 'Ice block': report.component.fields.condensation[1] ? 'Wet surface': 'None'}}</h4>
+          </ion-item>
+          <ion-item col-11 style="margin-left: 0" *ngIf="!report.energy">
+            <label>Comments</label>
+            <h4>{{report.comment || report.component.fields.damaged_comment || report.component.fields.condensation_comment}}</h4>
+          </ion-item>
+          <ng-container>
+            <ion-col text-center col-12 d-inline-block *ngIf="report.first_picture" style="padding-top: 2.5rem">
+              <img style="height: 4.2in" src="{{report.first_picture.picture}}">
+            </ion-col>
+          </ng-container> 
+        </ion-col>
+        <ion-col col-5 no-padding text-left style="border-left: 1px solid rgb(48,84,150)">
+          <div style="margin-left: -2rem" *ngIf="report.energy" class="report-result-container" report-result col-12
+            [parent]="{report: report}" (onReady)="report_ready()"></div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col [class.page-break]="(p%4)==0" padding col-6 text-center
+          *ngFor="let picture of report.filtered_pictures(), let p = index">
+          <output *ngIf="(p%4==0)" [attr.page-number]="(p / 4 + 2)" style="right: calc(-100% + 2rem)"></output>
+          <img style="max-height: 4.2in" [style.margin-top]="(p%4)<2?'1rem':'1rem'" src="{{picture.picture}}">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+<ng-template kendoPDFTemplate>
+  <div class="page-template pdf-report-page-template">
+    <div class="header">
+      <pdf-header></pdf-header>
+    </div>
+    <div class="footer">
+      <ion-grid class="footer" style="border-top: 1px solid #ccc">
+        <ion-row>
+          <ion-col col-11 style="text-align: justify">
+            <b>Disclaimer:</b> You should not rely solely on the TBI software application(s) for determining the
+            performance of an
+            insulation system and/or the energy or cost saving potential. The TBI software applications allow you
+            to
+            quickly check the performance of an insulation system and the energy or cost saving potential roughly,
+            due to the influence of a number of factors, including data/input provided by the user. The software
+            applications are not meant to replace professional advice. Under no circumstance EiiF and/or any EiiF
+            member authorized to use the member version of the Software application will be liable for damages
+            occurring to persons and properties of any nature and/or any other damages or losses arising out of
+            the
+            use of the TBI software application(s) or any information or service obtained through it, including
+            direct,
+            indirect, consequential or incidental damages and losses.
+          </ion-col>
+          <ion-col col-1 text-center>
+            <img class="logo" src="{{images.TBI}}">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ng-template>
+  </kendo-pdf-export>
+</ion-content>

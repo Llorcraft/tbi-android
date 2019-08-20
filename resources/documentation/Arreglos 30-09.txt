@@ -1,0 +1,3 @@
+En edit al dar en Ir guardar
+En pipe medium temp se queda por detras del teclado
+Al editar un report no me carga bien los datos y al guardar guarda uno nuevo

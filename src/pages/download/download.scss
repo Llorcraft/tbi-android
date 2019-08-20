@@ -1,0 +1,26 @@
+page-download {
+  ion-content {
+    ion-grid {
+      > ion-row:nth-child(2) {
+        position: fixed;
+        width: 100%;
+        height: calc(100vh - 200px);
+        overflow: auto;
+        top: 130px;
+
+        ion-list {
+          ion-item-sliding {
+            ion-label {
+              margin: 0 !important;
+            }
+
+            small {
+              color: #999;
+              font-size: 70%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

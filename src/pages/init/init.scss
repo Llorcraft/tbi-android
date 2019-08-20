@@ -1,0 +1,147 @@
+@import "../../scss/media.scss";
+
+page-init {
+  .scroll-content {
+    height: auto;
+  }
+
+  ion-checkbox {
+    //float: left;
+    .checkbox-icon{
+      margin: 4px 5px -4px 0!important;
+    }
+  }
+
+  [name="version-type"] {
+    .item-inner {
+      border: 0 !important;
+    }
+  }
+
+  ion-header {
+    padding-right: 0.5rem;
+    border: none;
+    box-shadow: none;
+    z-index: 100;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  ion-content {
+    ion-item {
+      &.error {
+        small.error {
+          display: block;
+          color: red !important;
+        }
+      }
+    }
+
+    p {
+      font-size: 90%;
+      color: #666 !important;
+    }
+
+    .scroll-content {
+      background: #fff;
+      background-position: -2% top;
+      background-repeat: no-repeat;
+      background-size: 102% auto;
+      margin-top: 0 !important;
+
+      form {
+        @include media("<=tablet") {
+          margin-top: -6rem;
+
+          @include media("landscape") {
+            margin-top: -1rem;
+          }
+        }
+
+        @include media(">=tablet") {
+          margin-top: -9rem;
+
+          @include media("landscape") {
+            margin-top: 0rem;
+          }
+        }
+      }
+
+      ion-list {
+        ion-item {
+          background-color: transparent !important;
+          // label, ion-input {
+          //   color: #fff!important;
+          // }
+        }
+      }
+    }
+
+    // background-color: #014a97 !important;
+    .bg-logo-eiif {
+      height: 2rem;
+      float: right;
+      width: 2rem;
+      margin-left: 0.25rem;
+      background-size: auto 80%;
+      background-repeat: no-repeat;
+      background-position: center top;
+    }
+
+    // ion-col {
+    //   //display: flex;
+    //   //align-items: center;
+    // }
+  }
+
+  small {
+    color: #aaa;
+    font-style: italic;
+  }
+
+  .client-logo {
+    background: #ececec;
+    padding: 0.5rem 1rem;
+
+    h5 {
+      line-height: 5rem;
+      text-align: center;
+      color: #aaa;
+      font-size: 1.4rem;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+  }
+
+  h2.welcome {
+    font-size: 30px !important;
+    line-height: 30px;
+
+    &:first-of-type {
+      margin: 0;
+    }
+
+    @media (max-width: 575px) {
+      font-size: 1.6rem !important;
+    }
+
+    color: #000 !important;
+    font-weight: 600 !important;
+  }
+
+  @media (orientation: portrait) {
+    ion-grid {
+      margin-top: 20%;
+    }
+  }
+
+  ion-footer {
+    ion-grid {
+      margin-top: 0;
+    }
+  }
+}
