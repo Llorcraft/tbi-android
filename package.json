@@ -66,7 +66,7 @@
     "cordova-plugin-filepath": "^1.4.2",
     "cordova-plugin-flashlight": "^3.2.0",
     "cordova-plugin-globalization": "^1.11.0",
-    "cordova-plugin-inappbrowser": "^3.0.0",
+    "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-packagemanager": "^0.1.7",
